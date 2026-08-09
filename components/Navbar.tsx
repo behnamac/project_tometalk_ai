@@ -7,7 +7,7 @@ import { SignedIn, SignedOut, SignInButton, UserButton, useUser } from "@clerk/n
 import {cn} from "@/lib/utils";
 
 const navItems = [
-    { label: "Library", href: "/" },
+    { label: "Library", href: "/library" },
     { label: "Add New", href: "/books/new" },
     { label: "Pricing", href: "/subscriptions" },
 ]
@@ -15,6 +15,8 @@ const navItems = [
 const Navbar = () => {
     const pathName = usePathname();
     const { user } = useUser();
+
+    if (pathName === "/") return null;
 
     return (
         <header className="w-full fixed z-50 bg-(--bg-primary)">

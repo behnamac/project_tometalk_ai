@@ -22,14 +22,14 @@ export default async function BookDetailsPage({
   const result = await getBookBySlug(slug);
 
   if (!result.success || !result.data) {
-    redirect("/");
+    redirect("/library");
   }
 
   const book = result.data;
 
   return (
     <div className="book-page-container">
-      <Link href="/" className="back-btn-floating">
+      <Link href="/library" className="back-btn-floating">
         <ArrowLeft className="size-6 text-[#212a3b]" />
       </Link>
 

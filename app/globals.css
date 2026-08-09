@@ -162,12 +162,52 @@
   --blue: #c8553d;
 }
 
+/* Fixed dark cinematic theme for the landing page, independent of global theme state */
+.landing-dark {
+  --background: #1a1918;
+  --foreground: #f7f4ee;
+  --card: #252321;
+  --card-foreground: #f7f4ee;
+  --popover: #252321;
+  --popover-foreground: #f7f4ee;
+  --primary: #f7f4ee;
+  --primary-foreground: #1a1918;
+  --secondary: #2d2a26;
+  --secondary-foreground: #f7f4ee;
+  --muted: #2d2a26;
+  --muted-foreground: #8a847a;
+  --accent: #2d2a26;
+  --accent-foreground: #f7f4ee;
+  --border: rgba(247, 244, 238, 0.1);
+  --input: rgba(247, 244, 238, 0.15);
+  --ring: #c8553d;
+
+  /* Brand color - terracotta */
+  --blue: #c8553d;
+
+  /* Landing-only accent tokens */
+  --landing-glow: radial-gradient(circle, rgba(200, 85, 61, 0.25), transparent 70%);
+  --landing-line: rgba(247, 244, 238, 0.08);
+
+  background: var(--background);
+  color: var(--foreground);
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-14px);
   }
 }
 
