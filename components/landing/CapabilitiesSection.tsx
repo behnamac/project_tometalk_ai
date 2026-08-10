@@ -12,7 +12,7 @@ const CapabilitiesSection = () => {
     return (
         <section className="wrapper grid gap-12 py-28 lg:grid-cols-[1fr_1.3fr]">
             <div className="lg:sticky lg:top-32 lg:self-start">
-                <h2 className="text-balance font-serif text-4xl font-semibold text-foreground sm:text-5xl">
+                <h2 className="text-balance font-serif text-4xl font-semibold tracking-[-0.01em] text-foreground sm:text-5xl">
                     Everything you need to get answers.
                 </h2>
                 <div className="mt-8 flex gap-2">

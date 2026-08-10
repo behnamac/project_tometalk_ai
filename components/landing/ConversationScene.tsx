@@ -16,7 +16,7 @@ const ConversationScene = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.6 }}
                 transition={{ duration: 0.6 }}
-                className="mb-12 text-center font-serif text-4xl font-semibold text-foreground sm:text-5xl"
+                className="mb-12 text-center font-serif text-4xl font-semibold tracking-[-0.01em] text-foreground sm:text-5xl"
             >
                 {CONVERSATION_SCENE_CONTENT.headline}
             </motion.h2>

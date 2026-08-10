@@ -32,7 +32,7 @@ const FinalCTA = () => {
                     transition={{ duration: 0.6 }}
                     className="order-1 lg:order-2"
                 >
-                    <h2 className="text-balance font-serif text-4xl font-semibold leading-tight text-foreground sm:text-5xl">
+                    <h2 className="text-balance font-serif text-4xl font-semibold leading-tight tracking-[-0.01em] text-foreground sm:text-5xl">
                         {FINAL_CTA_CONTENT.headline}
                         <br />
                         {FINAL_CTA_CONTENT.subheadline}

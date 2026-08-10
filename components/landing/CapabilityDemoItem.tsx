@@ -42,7 +42,7 @@ const CapabilityDemoItem = ({ index, title, description, isActive, onVisible }: 
                 isActive ? "border-(--blue)/50 bg-card" : "border-border bg-transparent"
             )}
         >
-            <h3 className={cn("text-xl font-medium transition-colors", isActive ? "text-foreground" : "text-muted-foreground")}>
+            <h3 className={cn("font-serif text-xl font-medium transition-colors", isActive ? "text-foreground" : "text-muted-foreground")}>
                 {title}
             </h3>
             <p className="mt-2 text-muted-foreground">{description}</p>

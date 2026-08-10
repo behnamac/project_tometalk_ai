@@ -22,7 +22,7 @@ const monaSans = Mona_Sans({
 const spaceGrotesk = Space_Grotesk({
     variable: '--font-space-grotesk',
     subsets: ['latin'],
-    weight: ['400', '500', '600', '700'],
+    weight: ['500', '600', '700'],
     display: 'swap'
 })
 

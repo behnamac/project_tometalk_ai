@@ -7,7 +7,7 @@ const UseCasesSection = () => {
     return (
         <section className="wrapper py-28">
             <div className="mb-14 max-w-lg">
-                <h2 className="text-balance font-serif text-4xl font-semibold text-foreground sm:text-5xl">
+                <h2 className="text-balance font-serif text-4xl font-semibold tracking-[-0.01em] text-foreground sm:text-5xl">
                     Built for how you already read.
                 </h2>
             </div>

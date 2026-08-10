@@ -17,7 +17,7 @@ const DocumentReadingScene = () => {
             className="wrapper grid items-center gap-12 py-28 lg:grid-cols-2"
         >
             <div>
-                <h2 className="text-balance font-serif text-4xl font-semibold leading-tight text-foreground sm:text-5xl">
+                <h2 className="text-balance font-serif text-4xl font-semibold leading-tight tracking-[-0.01em] text-foreground sm:text-5xl">
                     {READING_SCENE_CONTENT.headline}
                 </h2>
                 <p className="mt-5 max-w-md text-lg text-muted-foreground">{READING_SCENE_CONTENT.subheadline}</p>

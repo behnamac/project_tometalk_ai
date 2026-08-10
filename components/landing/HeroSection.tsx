@@ -23,7 +23,7 @@ const HeroSection = () => {
                     <p className="mb-4 text-sm font-medium uppercase tracking-[0.2em] text-(--blue)">
                         {HERO_CONTENT.eyebrow}
                     </p>
-                    <h1 className="text-balance font-serif text-5xl font-semibold leading-[1.05] text-foreground sm:text-6xl lg:text-7xl">
+                    <h1 className="text-balance font-serif text-5xl font-bold leading-[1.05] tracking-[-0.02em] text-foreground sm:text-6xl lg:text-7xl">
                         {HERO_CONTENT.headline}
                     </h1>
                     <p className="mt-6 max-w-md text-lg text-muted-foreground">{HERO_CONTENT.subheadline}</p>
