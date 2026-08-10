@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
@@ -39,87 +40,110 @@ const SignUpPage = () => {
     };
 
     return (
-        <div className="auth-wrapper">
-            <div className="auth-shadow w-full max-w-md p-8">
-                <h1 className="page-title">Create your account</h1>
-                <p className="page-description">Start transforming your books into conversations.</p>
+        <div className="login-dark flex min-h-screen">
+            <div className="login-visual-panel hidden md:flex">
+                <div className="login-glow-1" />
+                <div className="login-glow-2" />
+                <div className="login-particle login-particle-1" />
+                <div className="login-particle login-particle-2" />
+                <div className="login-particle login-particle-3" />
+                <div className="login-particle login-particle-4" />
 
-                <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 mt-8">
-                        <FormField
-                            control={form.control}
-                            name="name"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel className="form-label">Name</FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            className="form-input"
-                                            placeholder="Your name"
-                                            autoComplete="name"
-                                            {...field}
-                                            disabled={isSubmitting}
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
+                <div className="login-book-wrap">
+                    <div className="login-book">
+                        <div className="login-book-cover" />
+                        <div className="login-book-spine" />
+                        <div className="login-book-line-1" />
+                        <div className="login-book-line-2" />
+                        <div className="login-book-line-3" />
+                    </div>
+                </div>
+            </div>
 
-                        <FormField
-                            control={form.control}
-                            name="email"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel className="form-label">Email</FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            className="form-input"
-                                            type="email"
-                                            placeholder="you@example.com"
-                                            autoComplete="email"
-                                            {...field}
-                                            disabled={isSubmitting}
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
+            <div className="login-form-panel">
+                <div className="login-card">
+                    <Image src="/assets/logo.png" alt="TomeTalk" width={32} height={32} className="login-logo" />
+                    <h1 className="login-title">Create your account</h1>
+                    <p className="login-subtitle">Start transforming your books into conversations.</p>
 
-                        <FormField
-                            control={form.control}
-                            name="password"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel className="form-label">Password</FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            className="form-input"
-                                            type="password"
-                                            placeholder="At least 8 characters"
-                                            autoComplete="new-password"
-                                            {...field}
-                                            disabled={isSubmitting}
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
+                    <Form {...form}>
+                        <form onSubmit={form.handleSubmit(onSubmit)} className="login-form-fields">
+                            <FormField
+                                control={form.control}
+                                name="name"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel className="login-label">Name</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                className="login-input"
+                                                placeholder="Your name"
+                                                autoComplete="name"
+                                                {...field}
+                                                disabled={isSubmitting}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
 
-                        <Button type="submit" className="form-btn" disabled={isSubmitting}>
-                            {isSubmitting ? 'Creating account...' : 'Sign Up'}
-                        </Button>
-                    </form>
-                </Form>
+                            <FormField
+                                control={form.control}
+                                name="email"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel className="login-label">Email</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                className="login-input"
+                                                type="email"
+                                                placeholder="you@example.com"
+                                                autoComplete="email"
+                                                {...field}
+                                                disabled={isSubmitting}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
 
-                <p className="text-center text-sm text-[var(--text-secondary)] mt-6">
-                    Already have an account?{' '}
-                    <Link href="/sign-in" className="font-medium text-[#212a3b] hover:text-[#3d485e]">
-                        Sign in
-                    </Link>
-                </p>
+                            <FormField
+                                control={form.control}
+                                name="password"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel className="login-label">Password</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                className="login-input"
+                                                type="password"
+                                                placeholder="At least 8 characters"
+                                                autoComplete="new-password"
+                                                {...field}
+                                                disabled={isSubmitting}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+
+                            <Button type="submit" className="login-btn-primary" disabled={isSubmitting}>
+                                <span className="login-btn-sweep" />
+                                <span className="login-btn-text">{isSubmitting ? 'Creating account...' : 'Sign Up'}</span>
+                            </Button>
+                        </form>
+                    </Form>
+
+                    <p className="login-footer-text">
+                        Already have an account?{' '}
+                        <Link href="/sign-in" className="login-link">
+                            Sign in
+                        </Link>
+                    </p>
+                </div>
             </div>
         </div>
     );

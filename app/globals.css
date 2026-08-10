@@ -222,6 +222,27 @@
   min-height: 100vh;
 }
 
+/* Fixed dark editorial theme for the sign-in / sign-up pages, independent of global theme state */
+.login-dark {
+  --background: #1a1918;
+  --foreground: #f7f4ee;
+  --card: #211f1d;
+  --card-foreground: #f7f4ee;
+  --muted-foreground: #8a847a;
+  --border: rgba(247, 244, 238, 0.1);
+  --input: rgba(247, 244, 238, 0.15);
+  --ring: #c8553d;
+  --blue: #c8553d;
+
+  --font-serif: var(--font-space-grotesk);
+  --font-sans: var(--font-ibm-plex-sans);
+  font-family: var(--font-ibm-plex-sans);
+
+  background: var(--background);
+  color: var(--foreground);
+  min-height: 100vh;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -265,6 +286,38 @@
   50% {
     opacity: 0.85;
   }
+}
+
+@keyframes glow1 {
+  0%, 100% { transform: scale(1) translate(0, 0); opacity: .5; }
+  50% { transform: scale(1.15) translate(20px, -15px); opacity: .8; }
+}
+
+@keyframes glow2 {
+  0%, 100% { transform: scale(1) translate(0, 0); opacity: .35; }
+  50% { transform: scale(1.2) translate(-15px, 15px); opacity: .6; }
+}
+
+@keyframes riseParticle {
+  0% { transform: translateY(0); opacity: 0; }
+  10% { opacity: .7; }
+  90% { opacity: .4; }
+  100% { transform: translateY(-380px); opacity: 0; }
+}
+
+@keyframes floatCard {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes sweepLine {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes floatBook {
+  0%, 100% { transform: translateY(0) rotateY(-18deg) rotateX(6deg); }
+  50% { transform: translateY(-22px) rotateY(-12deg) rotateX(4deg); }
 }
 
 @layer utilities {
@@ -427,6 +480,173 @@
   }
   .select-item {
     @apply hover:rounded-lg font-medium text-lg;
+  }
+
+  /* ===========================================
+     LOGIN / SIGN-UP (dark editorial redesign)
+     =========================================== */
+  .login-visual-panel {
+    @apply relative flex-1 flex items-center justify-center overflow-hidden;
+  }
+  .login-glow-1 {
+    position: absolute;
+    width: 320px;
+    height: 320px;
+    top: -80px;
+    left: -80px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(200, 85, 61, 0.5), transparent 70%);
+    filter: blur(10px);
+    animation: glow1 8s ease-in-out infinite;
+  }
+  .login-glow-2 {
+    position: absolute;
+    width: 260px;
+    height: 260px;
+    bottom: -60px;
+    right: -40px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(200, 85, 61, 0.35), transparent 70%);
+    filter: blur(10px);
+    animation: glow2 9s ease-in-out infinite;
+  }
+  .login-particle {
+    position: absolute;
+    bottom: 0;
+    border-radius: 50%;
+  }
+  .login-particle-1 {
+    left: 18%;
+    width: 3px;
+    height: 3px;
+    background: #c8553d;
+    animation: riseParticle 6s linear infinite;
+  }
+  .login-particle-2 {
+    left: 38%;
+    width: 2px;
+    height: 2px;
+    background: var(--foreground);
+    opacity: 0.6;
+    animation: riseParticle 7.5s linear infinite 1.5s;
+  }
+  .login-particle-3 {
+    left: 58%;
+    width: 3px;
+    height: 3px;
+    background: #c8553d;
+    animation: riseParticle 5.5s linear infinite 0.7s;
+  }
+  .login-particle-4 {
+    left: 75%;
+    width: 2px;
+    height: 2px;
+    background: var(--foreground);
+    opacity: 0.5;
+    animation: riseParticle 8s linear infinite 2.4s;
+  }
+  .login-book-wrap {
+    position: relative;
+    width: 230px;
+    height: 310px;
+    perspective: 1000px;
+  }
+  .login-book {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    animation: floatBook 5.5s ease-in-out infinite;
+  }
+  .login-book-cover {
+    position: absolute;
+    inset: 0;
+    border-radius: 6px 12px 12px 6px;
+    background: linear-gradient(135deg, #c8553d, #a8432f);
+    box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.7);
+  }
+  .login-book-spine {
+    position: absolute;
+    left: 2px;
+    top: 6px;
+    bottom: 6px;
+    width: 10px;
+    border-radius: 2px 0 0 2px;
+    background: repeating-linear-gradient(var(--foreground), var(--foreground) 2px, #e4ddce 2px, #e4ddce 3px);
+    transform: translateZ(-4px);
+  }
+  .login-book-line-1 {
+    position: absolute;
+    left: 26px;
+    right: 26px;
+    top: 44px;
+    height: 3px;
+    border-radius: 2px;
+    background: rgba(247, 244, 238, 0.85);
+  }
+  .login-book-line-2 {
+    position: absolute;
+    left: 26px;
+    right: 46px;
+    top: 58px;
+    height: 3px;
+    border-radius: 2px;
+    background: rgba(247, 244, 238, 0.5);
+  }
+  .login-book-line-3 {
+    position: absolute;
+    left: 26px;
+    right: 66px;
+    top: 70px;
+    height: 3px;
+    border-radius: 2px;
+    background: rgba(247, 244, 238, 0.5);
+  }
+  .login-form-panel {
+    @apply flex-1 flex items-center justify-center px-6 py-14;
+  }
+  .login-card {
+    @apply w-full max-w-[380px];
+    animation: floatCard 7s ease-in-out infinite;
+  }
+  .login-logo {
+    @apply mb-6 rounded-[9px] overflow-hidden;
+    width: 32px;
+    height: 32px;
+  }
+  .login-title {
+    @apply font-serif font-semibold text-[32px] text-[var(--foreground)];
+    margin: 0;
+  }
+  .login-subtitle {
+    @apply mt-2.5 mb-9 text-[15px] text-[var(--muted-foreground)];
+  }
+  .login-form-fields {
+    @apply flex flex-col gap-[18px];
+  }
+  .login-label {
+    @apply block mb-2 text-sm font-medium text-[var(--foreground)];
+  }
+  .login-input {
+    @apply !w-full !h-auto !rounded-[10px] !border !border-[var(--input)] !bg-[var(--card)] !px-4 !py-[14px] !text-[15px] !text-[var(--foreground)] placeholder:!text-[var(--muted-foreground)];
+  }
+  .login-btn-primary {
+    @apply mt-2 w-full h-[52px] rounded-[10px] border-0 font-serif font-bold text-base cursor-pointer relative overflow-hidden bg-[var(--ring)] text-[var(--background)] hover:opacity-95;
+  }
+  .login-btn-sweep {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+    animation: sweepLine 2.6s linear infinite;
+  }
+  .login-btn-text {
+    position: relative;
+  }
+  .login-footer-text {
+    @apply mt-[26px] text-sm text-[var(--muted-foreground)];
+  }
+  .login-link {
+    @apply font-medium text-[var(--ring)] hover:opacity-80 transition-opacity;
   }
 
   /* ===========================================
