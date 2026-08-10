@@ -243,6 +243,27 @@
   min-height: 100vh;
 }
 
+/* Fixed dark editorial theme for the library page, independent of global theme state */
+.library-dark {
+  --background: #1a1918;
+  --foreground: #f7f4ee;
+  --card: #211f1d;
+  --card-foreground: #f7f4ee;
+  --muted-foreground: #8a847a;
+  --border: rgba(247, 244, 238, 0.1);
+  --input: rgba(247, 244, 238, 0.15);
+  --ring: #c8553d;
+  --blue: #c8553d;
+
+  --font-serif: var(--font-space-grotesk);
+  --font-sans: var(--font-ibm-plex-sans);
+  font-family: var(--font-ibm-plex-sans);
+
+  background: var(--background);
+  color: var(--foreground);
+  min-height: 100vh;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -881,6 +902,37 @@
   }
 
   /* ===========================================
+     LIBRARY PAGE (dark editorial redesign)
+     =========================================== */
+  .library-header {
+    @apply sticky top-0 z-50 border-b;
+    background: rgba(26, 25, 24, 0.92);
+    backdrop-filter: blur(8px);
+    border-color: var(--border);
+  }
+  .library-logo-text {
+    @apply font-serif text-[17px] font-semibold text-[var(--foreground)];
+  }
+  .library-nav-link {
+    @apply text-sm font-medium no-underline transition-opacity;
+  }
+  .library-nav-link-default {
+    @apply text-[var(--muted-foreground)] hover:opacity-80;
+  }
+  .library-nav-link-active {
+    @apply text-[var(--foreground)] border-b-2 border-[var(--ring)] pb-[3px];
+  }
+  .library-main {
+    @apply max-w-7xl px-5 mx-auto w-full pt-14 pb-24;
+  }
+  .library-title-row {
+    @apply flex items-center justify-between gap-5 mb-11 flex-wrap;
+  }
+  .library-title {
+    @apply font-serif font-semibold text-[34px] tracking-[-0.01em] text-[var(--foreground)];
+  }
+
+  /* ===========================================
      BOOKS LIBRARY COMPONENT
      =========================================== */
   .library-hero-card {
@@ -943,16 +995,16 @@
     @apply font-normal text-sm text-[#222c37] leading-5;
   }
   .library-search-wrapper {
-    @apply flex items-center bg-white border border-[var(--border-subtle)] rounded-lg overflow-hidden w-full sm:w-80;
+    @apply flex items-center bg-[var(--card)] border border-[var(--input)] rounded-lg overflow-hidden w-full sm:w-80;
   }
   .library-search-input {
-    @apply flex-1 py-2 px-4 outline-none text-[var(--text-primary)] placeholder:text-[var(--text-muted)];
+    @apply flex-1 py-2 px-4 outline-none text-[var(--foreground)] placeholder:text-[var(--muted-foreground)];
   }
   .library-books-grid {
     @apply grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-3 md:gap-x-10 gap-y-7 md:gap-y-9;
   }
   .library-empty-card {
-    @apply bg-[var(--bg-secondary)] rounded-[14px] p-12 max-w-md mx-auto;
+    @apply bg-[var(--card)] rounded-[14px] p-12 max-w-md mx-auto text-center text-[var(--muted-foreground)];
   }
 
   /* ===========================================
@@ -1073,7 +1125,7 @@
     @apply absolute -left-1 top-2 bottom-2 w-3 bg-gradient-to-r from-[#8B7355] to-[#A08060] rounded-l-md z-0;
   }
   .book-card-cover-wrapper {
-    @apply relative bg-white rounded-[14px] overflow-hidden flex items-center justify-center h-[205px] md:h-[240px];
+    @apply relative bg-[var(--card)] rounded-[14px] overflow-hidden flex items-center justify-center h-[205px] md:h-[240px];
   }
   .book-card-cover {
     @apply w-auto h-[170px] md:h-[200px] object-cover rounded-lg;
@@ -1083,11 +1135,10 @@
     @apply mt-4 md:mt-5 flex-1 flex flex-col gap-1;
   }
   .book-card-title {
-    @apply font-bold text-[#212a3b] line-clamp-1 text-base md:text-xl leading-[22px] md:leading-[30px];
-    font-family: 'IBM Plex Serif', serif;
+    @apply font-semibold text-[var(--foreground)] line-clamp-1 text-base md:text-xl leading-[22px] md:leading-[30px];
   }
   .book-card-author {
-    @apply text-sm md:text-base font-medium text-[#3d485e] line-clamp-1;
+    @apply text-sm md:text-base font-medium text-[var(--muted-foreground)] line-clamp-1;
   }
 
   /* ===========================================
