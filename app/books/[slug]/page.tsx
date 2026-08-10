@@ -1,9 +1,10 @@
-import { auth } from "@clerk/nextjs/server";
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, MicOff, Mic } from "lucide-react";
 
+import { auth } from "@/lib/auth";
 import { getBookBySlug } from "@/lib/actions/book.actions";
 import VapiControls from "@/components/VapiControls";
 
@@ -12,9 +13,9 @@ export default async function BookDetailsPage({
 }: {
   params: Promise<{ slug: string }>;
 }) {
-  const { userId } = await auth();
+  const session = await auth.api.getSession({ headers: await headers() });
 
-  if (!userId) {
+  if (!session?.user) {
     redirect("/sign-in");
   }
 

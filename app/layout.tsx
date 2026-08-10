@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Serif, Mona_Sans} from "next/font/google";
-import { ClerkProvider } from "@clerk/nextjs";
 
 import Navbar from "@/components/Navbar";
 import "./globals.css";
@@ -30,16 +29,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
-        <html lang="en">
-          <body
-            className={`${ibmPlexSerif.variable} ${monaSans.variable} relative font-sans antialiased`}
-          >
-            <Navbar />
-            {children}
-            <Toaster />
-          </body>
-        </html>
-    </ClerkProvider>
+    <html lang="en">
+      <body
+        className={`${ibmPlexSerif.variable} ${monaSans.variable} relative font-sans antialiased`}
+        suppressHydrationWarning
+      >
+        <Navbar />
+        {children}
+        <Toaster />
+      </body>
+    </html>
   );
 }

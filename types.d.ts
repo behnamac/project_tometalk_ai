@@ -3,7 +3,7 @@ import { ReactNode } from 'react';
 import { Control, FieldPath, FieldValues } from 'react-hook-form';
 import { LucideIcon } from 'lucide-react';
 import z from 'zod';
-import { UploadSchema } from '@/lib/zod';
+import { UploadSchema, SignInSchema, SignUpSchema } from '@/lib/zod';
 
 // ============================================
 // DATABASE MODELS
@@ -11,7 +11,7 @@ import { UploadSchema } from '@/lib/zod';
 
 export interface IBook extends Document {
     _id: string;
-    clerkId: string;
+    userId: string;
     title: string;
     slug: string;
     author: string;
@@ -27,7 +27,7 @@ export interface IBook extends Document {
 }
 
 export interface IBookSegment extends Document {
-    clerkId: string;
+    userId: string;
     bookId: Types.ObjectId;
     content: string;
     segmentIndex: number;
@@ -39,7 +39,7 @@ export interface IBookSegment extends Document {
 
 export interface IVoiceSession extends Document {
     _id: string;
-    clerkId: string;
+    userId: string;
     bookId: Types.ObjectId;
     startedAt: Date;
     endedAt?: Date;
@@ -54,9 +54,11 @@ export interface IVoiceSession extends Document {
 // ============================================
 
 export type BookUploadFormValues = z.infer<typeof UploadSchema>;
+export type SignInFormValues = z.infer<typeof SignInSchema>;
+export type SignUpFormValues = z.infer<typeof SignUpSchema>;
 
 export interface CreateBook {
-    clerkId: string;
+    userId: string;
     title: string;
     author: string;
     persona?: string;

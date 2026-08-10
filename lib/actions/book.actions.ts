@@ -1,5 +1,7 @@
 'use server';
 
+import {headers} from "next/headers";
+
 import {CreateBook, TextSegment} from "@/types";
 import {connectToDatabase} from "@/database/mongoose";
 import {escapeRegex, generateSlug, serializeData} from "@/lib/utils";
@@ -85,17 +87,18 @@ export const createBook = async (data: CreateBook) => {
         const { getUserPlan } = await import("@/lib/subscription.server");
         const { PLAN_LIMITS } = await import("@/lib/subscription-constants");
 
-        const { auth } = await import("@clerk/nextjs/server");
-        const { userId } = await auth();
+        const { auth } = await import("@/lib/auth");
+        const session = await auth.api.getSession({ headers: await headers() });
+        const userId = session?.user?.id;
 
-        if (!userId || userId !== data.clerkId) {
+        if (!userId || userId !== data.userId) {
             return { success: false, error: "Unauthorized" };
         }
 
         const plan = await getUserPlan();
         const limits = PLAN_LIMITS[plan];
 
-        const bookCount = await Book.countDocuments({ clerkId: userId });
+        const bookCount = await Book.countDocuments({ userId });
 
         if (bookCount >= limits.maxBooks) {
             const { revalidatePath } = await import("next/cache");
@@ -108,7 +111,7 @@ export const createBook = async (data: CreateBook) => {
             };
         }
 
-        const book = await Book.create({...data, clerkId: userId, slug, totalSegments: 0});
+        const book = await Book.create({...data, userId, slug, totalSegments: 0});
 
         return {
             success: true,
@@ -146,14 +149,14 @@ export const getBookBySlug = async (slug: string) => {
     }
 }
 
-export const saveBookSegments = async (bookId: string, clerkId: string, segments: TextSegment[]) => {
+export const saveBookSegments = async (bookId: string, userId: string, segments: TextSegment[]) => {
     try {
         await connectToDatabase();
 
         console.log('Saving book segments...');
 
         const segmentsToInsert = segments.map(({ text, segmentIndex, pageNumber, wordCount }) => ({
-            clerkId, bookId, content: text, segmentIndex, pageNumber, wordCount
+            userId, bookId, content: text, segmentIndex, pageNumber, wordCount
         }));
 
         await BookSegment.insertMany(segmentsToInsert);

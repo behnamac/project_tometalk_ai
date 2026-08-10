@@ -13,7 +13,7 @@ import { ACCEPTED_PDF_TYPES, ACCEPTED_IMAGE_TYPES, DEFAULT_VOICE } from '@/lib/c
 import FileUploader from './FileUploader';
 import VoiceSelector from './VoiceSelector';
 import LoadingOverlay from './LoadingOverlay';
-import {useAuth, useUser} from "@clerk/nextjs";
+import {authClient} from "@/lib/auth-client";
 import { toast } from 'sonner';
 import {checkBookExists, createBook, saveBookSegments} from "@/lib/actions/book.actions";
 import {useRouter} from "next/navigation";
@@ -23,7 +23,8 @@ import {upload} from "@vercel/blob/client";
 const UploadForm = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isMounted, setIsMounted] = useState(false);
-    const { userId } = useAuth();
+    const { data: session } = authClient.useSession();
+    const userId = session?.user?.id;
     const router = useRouter()
 
     useEffect(() => {
@@ -99,7 +100,7 @@ const UploadForm = () => {
             }
 
             const book = await createBook({
-                clerkId: userId,
+                userId,
                 title: data.title,
                 author: data.author,
                 persona: data.persona,

@@ -12,3 +12,14 @@ export const UploadSchema = z.object({
         .refine((file) => !file || file.size <= MAX_IMAGE_SIZE, "Image size must be less than 10MB")
         .refine((file) => !file || ACCEPTED_IMAGE_TYPES.includes(file.type), "Only .jpg, .jpeg, .png and .webp formats are supported"),
 });
+
+export const SignInSchema = z.object({
+    email: z.string().min(1, "Email is required").email("Enter a valid email address"),
+    password: z.string().min(1, "Password is required"),
+});
+
+export const SignUpSchema = z.object({
+    name: z.string().min(1, "Name is required").max(100, "Name is too long"),
+    email: z.string().min(1, "Email is required").email("Enter a valid email address"),
+    password: z.string().min(8, "Password must be at least 8 characters").max(128, "Password is too long"),
+});

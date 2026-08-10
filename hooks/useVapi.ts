@@ -4,7 +4,7 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import Vapi from '@vapi-ai/web';
-import { useAuth } from '@clerk/nextjs';
+import { authClient } from '@/lib/auth-client';
 
 import { useSubscription } from '@/hooks/useSubscription';
 import { ASSISTANT_ID, DEFAULT_VOICE, VOICE_SETTINGS } from '@/lib/constants';
@@ -41,7 +41,8 @@ function getVapi() {
 export type CallStatus = 'idle' | 'connecting' | 'starting' | 'listening' | 'thinking' | 'speaking';
 
 export function useVapi(book: IBook) {
-    const { userId } = useAuth();
+    const { data: session } = authClient.useSession();
+    const userId = session?.user?.id;
     const { limits } = useSubscription();
 
     const [status, setStatus] = useState<CallStatus>('idle');

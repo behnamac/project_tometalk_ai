@@ -5,7 +5,7 @@ import {connectToDatabase} from "@/database/mongoose";
 import VoiceSession from "@/database/models/voice-session.model";
 import {getCurrentBillingPeriodStart} from "@/lib/subscription-constants";
 
-export const startVoiceSession = async (clerkId: string, bookId: string): Promise<StartSessionResult> => {
+export const startVoiceSession = async (userId: string, bookId: string): Promise<StartSessionResult> => {
     try {
         await connectToDatabase();
 
@@ -18,7 +18,7 @@ export const startVoiceSession = async (clerkId: string, bookId: string): Promis
         const billingPeriodStart = getCurrentBillingPeriodStart();
 
         const sessionCount = await VoiceSession.countDocuments({
-            clerkId,
+            userId,
             billingPeriodStart
         });
 
@@ -34,7 +34,7 @@ export const startVoiceSession = async (clerkId: string, bookId: string): Promis
         }
 
         const session = await VoiceSession.create({
-            clerkId,
+            userId,
             bookId,
             startedAt: new Date(),
             billingPeriodStart,

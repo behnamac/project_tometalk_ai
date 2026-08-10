@@ -11,14 +11,14 @@ TomeTalk is an AI-powered platform for having real-time voice conversations with
 
 ## <a name="introduction">✨ Introduction</a>
 
-Built with Next.js 16 and MongoDB, TomeTalk transforms uploaded PDFs into interactive entities using natural voice synthesis. Choose from custom ElevenLabs personas to chat with your library, request summaries, and view live transcripts — all wrapped in a Shadcn UI with Clerk authentication.
+Built with Next.js 16 and MongoDB, TomeTalk transforms uploaded PDFs into interactive entities using natural voice synthesis. Choose from custom ElevenLabs personas to chat with your library, request summaries, and view live transcripts — all wrapped in a Shadcn UI with Better Auth authentication.
 
 ## <a name="tech-stack">⚙️ Tech Stack</a>
 
 - **[Next.js](https://nextjs.org/docs)** — full-stack React framework handling routing, server-side rendering, and API routes.
 - **[TypeScript](https://www.typescriptlang.org/)** — static typing for a maintainable, robust codebase.
 - **[MongoDB](https://www.mongodb.com/docs/)** + **[Mongoose](https://mongoosejs.com/)** — document storage for user libraries, book metadata, and conversation transcripts.
-- **[Clerk](https://clerk.com/docs)** — authentication and session management, with pre-built sign-in/sign-up components.
+- **[Better Auth](https://www.better-auth.com/docs)** — self-hosted authentication and session management, with a Stripe plugin powering billing.
 - **[Vapi](https://docs.vapi.ai/)** — real-time, low-latency voice AI powering the back-and-forth conversations with uploaded books.
 - **[ElevenLabs](https://elevenlabs.io/docs)** — lifelike text-to-speech for voice previews and AI persona playback.
 - **[Shadcn UI](https://ui.shadcn.com/)** — accessible, themeable components built on Tailwind CSS and Radix UI.
@@ -71,13 +71,15 @@ Create a `.env` file in the project root:
 NODE_ENV='development'
 NEXT_PUBLIC_BASE_URL=
 
-# CLERK
-NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
-CLERK_SECRET_KEY=
-NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
-NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
-NEXT_PUBLIC_CLERK_SIGN_IN_FALLBACK_REDIRECT_URL=/
-NEXT_PUBLIC_CLERK_SIGN_UP_FALLBACK_REDIRECT_URL=/
+# BETTER AUTH
+BETTER_AUTH_SECRET=
+BETTER_AUTH_URL=http://localhost:3000
+
+# STRIPE (billing, via the Better Auth Stripe plugin)
+STRIPE_SECRET_KEY=
+STRIPE_WEBHOOK_SECRET=
+STRIPE_STANDARD_PRICE_ID=
+STRIPE_PRO_PRICE_ID=
 
 # VERCEL BLOB
 BLOB_READ_WRITE_TOKEN=
@@ -96,7 +98,9 @@ GOOGLE_GEMINI_API_KEY=
 ELEVENLABS_API_KEY=
 ```
 
-Get credentials at: [Clerk](https://clerk.com), [Vercel](https://vercel.com), [MongoDB](https://www.mongodb.com), [Vapi](https://vapi.ai), [Google AI Studio](https://aistudio.google.com), [ElevenLabs](https://elevenlabs.io).
+`BETTER_AUTH_SECRET` must be a high-entropy string of at least 32 characters (e.g. `openssl rand -hex 32`). Get other credentials at: [Stripe](https://dashboard.stripe.com), [Vercel](https://vercel.com), [MongoDB](https://www.mongodb.com), [Vapi](https://vapi.ai), [Google AI Studio](https://aistudio.google.com), [ElevenLabs](https://elevenlabs.io).
+
+For Stripe billing, create two recurring Prices in test mode (Standard, Pro) and put their IDs in `STRIPE_STANDARD_PRICE_ID`/`STRIPE_PRO_PRICE_ID`, then register a webhook endpoint at `https://your-domain.com/api/auth/stripe/webhook` listening for `checkout.session.completed`, `customer.subscription.created`, `customer.subscription.updated`, and `customer.subscription.deleted`, and put its signing secret in `STRIPE_WEBHOOK_SECRET`.
 
 **Running the Project**
 

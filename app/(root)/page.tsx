@@ -1,11 +1,13 @@
-import { auth } from "@clerk/nextjs/server";
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+
+import { auth } from "@/lib/auth";
 import LandingPage from "@/components/landing/LandingPage";
 
 const Page = async () => {
-    const { userId } = await auth();
+    const session = await auth.api.getSession({ headers: await headers() });
 
-    if (userId) {
+    if (session?.user) {
         redirect("/library");
     }
 

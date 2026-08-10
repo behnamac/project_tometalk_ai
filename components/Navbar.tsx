@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import {usePathname} from "next/navigation";
-import { SignedIn, SignedOut, SignInButton, UserButton, useUser } from "@clerk/nextjs";
+import {usePathname, useRouter} from "next/navigation";
+import { authClient } from "@/lib/auth-client";
 import {cn} from "@/lib/utils";
 
 const navItems = [
@@ -14,9 +14,16 @@ const navItems = [
 
 const Navbar = () => {
     const pathName = usePathname();
-    const { user } = useUser();
+    const router = useRouter();
+    const { data: session } = authClient.useSession();
 
     if (pathName === "/") return null;
+
+    const handleSignOut = async () => {
+        await authClient.signOut();
+        router.push("/");
+        router.refresh();
+    };
 
     return (
         <header className="w-full fixed z-50 bg-(--bg-primary)">
@@ -38,19 +45,20 @@ const Navbar = () => {
                     })}
 
                     <div className="flex gap-7.5 items-center">
-                        <SignedOut>
-                            <SignInButton mode="modal" />
-                        </SignedOut>
-                        <SignedIn>
+                        {session?.user ? (
                             <div className="nav-user-link">
-                                <UserButton />
-                                {user?.firstName && (
-                                    <Link href="/subscriptions" className="nav-user-name">
-                                        {user.firstName}
-                                    </Link>
-                                )}
+                                <Link href="/subscriptions" className="nav-user-name">
+                                    {session.user.name}
+                                </Link>
+                                <button onClick={handleSignOut} className="nav-btn">
+                                    Sign out
+                                </button>
                             </div>
-                        </SignedIn>
+                        ) : (
+                            <Link href="/sign-in" className="nav-btn">
+                                Sign in
+                            </Link>
+                        )}
                     </div>
                 </nav>
             </div>
