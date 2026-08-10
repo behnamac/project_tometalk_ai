@@ -8,7 +8,13 @@ import mongoClient, { mongoDb } from '@/database/mongo-client';
 import { PLANS } from '@/lib/subscription-constants';
 
 function buildAuth() {
-    const stripeClient = new Stripe(process.env.STRIPE_SECRET_KEY!);
+    // The Stripe SDK itself validates its apiKey argument eagerly and throws
+    // if it's missing — a placeholder keeps construction (and therefore the
+    // whole auth setup, including unrelated features like email/password
+    // sign-in) from crashing when Stripe billing isn't configured yet. Real
+    // Stripe calls made with this placeholder fail normally against Stripe's
+    // API instead of crashing at startup.
+    const stripeClient = new Stripe(process.env.STRIPE_SECRET_KEY || 'sk_test_not_configured');
 
     return betterAuth({
         database: mongodbAdapter(mongoDb, { client: mongoClient }),
