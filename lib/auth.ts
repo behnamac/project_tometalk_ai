@@ -57,8 +57,13 @@ function getAuthInstance(): Auth {
 // touch billing. The Proxy defers construction until the first `auth.*`
 // access, which only happens while handling a real request.
 export const auth: Auth = new Proxy({} as Auth, {
-    get(_target, prop, receiver) {
-        return Reflect.get(getAuthInstance(), prop, receiver);
+    // Deliberately use the real instance as the receiver (not the default
+    // Proxy receiver) — otherwise any getter/method on the instance that
+    // reads `this` internally (e.g. to reach private class fields) would run
+    // with `this` bound to this Proxy instead of the real object, and throw.
+    get(_target, prop) {
+        const instance = getAuthInstance();
+        return Reflect.get(instance, prop, instance);
     },
     has(_target, prop) {
         return Reflect.has(getAuthInstance(), prop);
