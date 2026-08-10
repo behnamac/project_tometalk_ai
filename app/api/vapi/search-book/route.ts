@@ -2,6 +2,16 @@ import { NextResponse } from 'next/server';
 
 import { searchBookSegments } from '@/lib/actions/book.actions';
 
+const VAPI_SERVER_SECRET = process.env.VAPI_SERVER_SECRET;
+
+// Vapi signs server tool-call requests with this header when a "Server URL Secret"
+// is configured on the assistant; without it, anyone who finds this URL could read
+// any book's content by guessing a bookId.
+function isAuthorizedVapiRequest(request: Request): boolean {
+    if (!VAPI_SERVER_SECRET) return false;
+    return request.headers.get('x-vapi-secret') === VAPI_SERVER_SECRET;
+}
+
 // Helper function to process book search logic
 async function processBookSearch(bookId: unknown, query: unknown) {
     // Validate inputs before conversion to prevent null/undefined becoming "null"/"undefined" strings
@@ -26,9 +36,7 @@ async function processBookSearch(bookId: unknown, query: unknown) {
         return { result: 'No information found about this topic in the book.' };
     }
 
-    const combinedText = searchResult.data
-        .map((segment) => (segment as { content: string }).content)
-        .join('\n\n');
+    const combinedText = searchResult.data.map((segment) => segment.content).join('\n\n');
 
     return { result: combinedText };
 }
@@ -47,10 +55,12 @@ function parseArgs(args: unknown): Record<string, unknown> {
 }
 
 export async function POST(request: Request) {
+    if (!isAuthorizedVapiRequest(request)) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     try {
         const body = await request.json();
-
-        console.log('Vapi search-book request:', JSON.stringify(body, null, 2));
 
         // Support multiple Vapi formats
         const functionCall = body?.message?.functionCall;
@@ -94,8 +104,9 @@ export async function POST(request: Request) {
         return NextResponse.json({ results });
     } catch (error) {
         console.error('Vapi search-book error:', error);
-        return NextResponse.json({
-            results: [{ result: 'Error processing request' }],
-        });
+        return NextResponse.json(
+            { results: [{ result: 'Error processing request' }] },
+            { status: 500 },
+        );
     }
 }

@@ -67,6 +67,8 @@ npm install
 
 Create a `.env` file in the project root:
 
+See [`.env.example`](./.env.example) for the full list, reproduced here:
+
 ```env
 NODE_ENV='development'
 NEXT_PUBLIC_BASE_URL=
@@ -83,22 +85,24 @@ STRIPE_PRO_PRICE_ID=
 
 # VERCEL BLOB
 BLOB_READ_WRITE_TOKEN=
+NEXT_PUBLIC_BLOB_HOSTNAME= # optional: only needed if the Blob store is rotated/recreated
 
 # MONGODB
 MONGODB_URI=
 
 # VAPI
 NEXT_PUBLIC_VAPI_API_KEY=
-VAPI_SERVER_SECRET=
+NEXT_PUBLIC_ASSISTANT_ID=
+VAPI_SERVER_SECRET= # set as the assistant's "Server URL Secret" in the Vapi dashboard
 
-# Google Gemini API for embeddings
+# Reserved for future use — not currently read by any code path.
 GOOGLE_GEMINI_API_KEY=
-
-# ELEVENLABS
 ELEVENLABS_API_KEY=
 ```
 
-`BETTER_AUTH_SECRET` must be a high-entropy string of at least 32 characters (e.g. `openssl rand -hex 32`). Get other credentials at: [Stripe](https://dashboard.stripe.com), [Vercel](https://vercel.com), [MongoDB](https://www.mongodb.com), [Vapi](https://vapi.ai), [Google AI Studio](https://aistudio.google.com), [ElevenLabs](https://elevenlabs.io).
+`BETTER_AUTH_SECRET` must be a high-entropy string of at least 32 characters (e.g. `openssl rand -hex 32`). Get other credentials at: [Stripe](https://dashboard.stripe.com), [Vercel](https://vercel.com), [MongoDB](https://www.mongodb.com), [Vapi](https://vapi.ai).
+
+Book search currently uses MongoDB `$text`/regex search, not embeddings — `GOOGLE_GEMINI_API_KEY` and `ELEVENLABS_API_KEY` are unused placeholders for a possible future feature, not a currently active integration.
 
 For Stripe billing, create two recurring Prices in test mode (Standard, Pro) and put their IDs in `STRIPE_STANDARD_PRICE_ID`/`STRIPE_PRO_PRICE_ID`, then register a webhook endpoint at `https://your-domain.com/api/auth/stripe/webhook` listening for `checkout.session.completed`, `customer.subscription.created`, `customer.subscription.updated`, and `customer.subscription.deleted`, and put its signing secret in `STRIPE_WEBHOOK_SECRET`.
 

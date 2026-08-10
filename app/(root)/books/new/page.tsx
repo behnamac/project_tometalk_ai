@@ -1,10 +1,10 @@
-import BookUploadHeader from "@/components/BookUploadHeader";
+import AppHeader from "@/components/AppHeader";
 import UploadForm from "@/components/UploadForm";
 
 const Page = () => {
     return (
         <div className="book-upload-dark">
-            <BookUploadHeader />
+            <AppHeader />
 
             <main className="book-upload-main">
                 <section className="flex flex-col gap-3.5 text-center mb-12">

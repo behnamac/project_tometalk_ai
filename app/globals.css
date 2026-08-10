@@ -377,26 +377,30 @@
   }
 
   /* ===========================================
-     BOOK UPLOAD WIZARD (dark editorial redesign)
+     APP HEADER (shared by library + book upload wizard, dark editorial)
      =========================================== */
-  .book-upload-header {
+  .app-header {
     @apply sticky top-0 z-50 border-b;
     background: rgba(26, 25, 24, 0.92);
     backdrop-filter: blur(8px);
-    border-color: var(--landing-line, rgba(247, 244, 238, 0.1));
+    border-color: var(--border);
   }
-  .book-upload-logo-text {
+  .app-header-logo-text {
     @apply font-serif text-[17px] font-semibold text-[var(--foreground)];
   }
-  .book-upload-nav-link {
+  .app-header-nav-link {
     @apply text-sm font-medium no-underline transition-opacity;
   }
-  .book-upload-nav-link-default {
+  .app-header-nav-link-default {
     @apply text-[var(--muted-foreground)] hover:opacity-80;
   }
-  .book-upload-nav-link-active {
+  .app-header-nav-link-active {
     @apply text-[var(--foreground)] border-b-2 border-[var(--ring)] pb-[3px];
   }
+
+  /* ===========================================
+     BOOK UPLOAD WIZARD (dark editorial redesign)
+     =========================================== */
   .book-upload-main {
     @apply max-w-[680px] mx-auto px-5 pt-18 pb-24;
   }
@@ -904,24 +908,6 @@
   /* ===========================================
      LIBRARY PAGE (dark editorial redesign)
      =========================================== */
-  .library-header {
-    @apply sticky top-0 z-50 border-b;
-    background: rgba(26, 25, 24, 0.92);
-    backdrop-filter: blur(8px);
-    border-color: var(--border);
-  }
-  .library-logo-text {
-    @apply font-serif text-[17px] font-semibold text-[var(--foreground)];
-  }
-  .library-nav-link {
-    @apply text-sm font-medium no-underline transition-opacity;
-  }
-  .library-nav-link-default {
-    @apply text-[var(--muted-foreground)] hover:opacity-80;
-  }
-  .library-nav-link-active {
-    @apply text-[var(--foreground)] border-b-2 border-[var(--ring)] pb-[3px];
-  }
   .library-main {
     @apply max-w-7xl px-5 mx-auto w-full pt-14 pb-24;
   }

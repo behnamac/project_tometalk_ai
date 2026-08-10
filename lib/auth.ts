@@ -7,6 +7,12 @@ import Stripe from 'stripe';
 import mongoClient, { mongoDb } from '@/database/mongo-client';
 import { PLANS } from '@/lib/subscription-constants';
 
+// Note: unlike MONGODB_URI (required for the app to function at all), these
+// aren't validated eagerly — this module is imported during the production
+// build's page-data collection, and failing fast here would break builds in
+// environments where Stripe billing isn't fully configured yet (e.g. local
+// dev before Stripe setup). Misconfiguration instead surfaces when Stripe
+// functionality is actually exercised.
 const stripeClient = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
 export const auth = betterAuth({

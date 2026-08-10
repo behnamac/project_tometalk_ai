@@ -6,6 +6,14 @@ import z from 'zod';
 import { UploadSchema, SignInSchema, SignUpSchema } from '@/lib/zod';
 
 // ============================================
+// SHARED RESULT TYPE
+// ============================================
+
+export type ActionResult<T> =
+    | { success: true; data: T }
+    | { success: false; error: string };
+
+// ============================================
 // DATABASE MODELS
 // ============================================
 
@@ -118,15 +126,12 @@ export interface FileUploadFieldProps<T extends FieldValues> {
     placeholder: string;
     hint: string;
 }
-import {PLANS, PlanType} from "@/lib/subscription-constants";
 
-export interface SessionCheckResult {
-    allowed: boolean;
-    currentCount: number;
-    limit: number;
-    plan: PlanType;
-    maxDurationMinutes: number;
+export interface CreateBookResult {
+    success: boolean;
+    data?: { book: IBook; alreadyExists: boolean };
     error?: string;
+    isBillingError?: boolean;
 }
 
 export interface StartSessionResult {

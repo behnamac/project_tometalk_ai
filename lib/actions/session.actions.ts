@@ -1,72 +1,53 @@
 'use server';
 
-import {EndSessionResult, StartSessionResult} from "@/types";
-import {connectToDatabase} from "@/database/mongoose";
-import VoiceSession from "@/database/models/voice-session.model";
-import {getCurrentBillingPeriodStart} from "@/lib/subscription-constants";
+import { headers } from "next/headers";
+import { revalidatePath } from "next/cache";
 
-export const startVoiceSession = async (userId: string, bookId: string): Promise<StartSessionResult> => {
+import { EndSessionResult, StartSessionResult } from "@/types";
+import { auth } from "@/lib/auth";
+import * as sessionService from "@/lib/services/session.service";
+import { BillingLimitError } from "@/lib/services/book.service";
+
+export const startVoiceSession = async (bookId: string): Promise<StartSessionResult> => {
     try {
-        await connectToDatabase();
+        const session = await auth.api.getSession({ headers: await headers() });
+        const userId = session?.user?.id;
 
-        // Limits/Plan to see whether a session is allowed.
-        const { getUserPlan } = await import("@/lib/subscription.server");
-        const { PLAN_LIMITS, getCurrentBillingPeriodStart } = await import("@/lib/subscription-constants");
-
-        const plan = await getUserPlan();
-        const limits = PLAN_LIMITS[plan];
-        const billingPeriodStart = getCurrentBillingPeriodStart();
-
-        const sessionCount = await VoiceSession.countDocuments({
-            userId,
-            billingPeriodStart
-        });
-
-        if (sessionCount >= limits.maxSessionsPerMonth) {
-            const { revalidatePath } = await import("next/cache");
-            revalidatePath("/");
-
-            return {
-                success: false,
-                error: `You have reached the monthly session limit for your ${plan} plan (${limits.maxSessionsPerMonth}). Please upgrade for more sessions.`,
-                isBillingError: true,
-            };
+        if (!userId) {
+            return { success: false, error: 'You must be signed in to start a voice session.' };
         }
 
-        const session = await VoiceSession.create({
-            userId,
-            bookId,
-            startedAt: new Date(),
-            billingPeriodStart,
-            durationSeconds: 0,
-        });
+        const started = await sessionService.startSessionForUser(userId, bookId);
 
         return {
             success: true,
-            sessionId: session._id.toString(),
-            maxDurationMinutes: limits.maxDurationPerSession,
-        }
+            sessionId: started.sessionId,
+            maxDurationMinutes: started.maxDurationMinutes,
+        };
     } catch (e) {
+        if (e instanceof BillingLimitError) {
+            revalidatePath("/");
+            return { success: false, error: e.message, isBillingError: true };
+        }
         console.error('Error starting voice session', e);
-        return { success: false, error: 'Failed to start voice session. Please try again later.' }
+        return { success: false, error: 'Failed to start voice session. Please try again later.' };
     }
 }
 
 export const endVoiceSession = async (sessionId: string, durationSeconds: number): Promise<EndSessionResult> => {
     try {
-        await connectToDatabase();
+        const session = await auth.api.getSession({ headers: await headers() });
+        const userId = session?.user?.id;
 
-        const result = await VoiceSession.findByIdAndUpdate(sessionId, {
-            endedAt: new Date(),
-            durationSeconds,
-        });
+        if (!userId) {
+            return { success: false, error: 'You must be signed in to end a voice session.' };
+        }
 
-        if(!result) return { success: false, error: 'Voice session not found.' }
+        await sessionService.endSessionForUser(sessionId, userId, durationSeconds);
 
-        return { success: true }
+        return { success: true };
     } catch (e) {
         console.error('Error ending voice session', e);
-        return { success: false, error: 'Failed to end voice session. Please try again later.' }
+        return { success: false, error: 'Failed to end voice session. Please try again later.' };
     }
 }
-

@@ -16,8 +16,6 @@ const Navbar = () => {
     const router = useRouter();
     const { data: session } = authClient.useSession();
 
-    if (pathName === "/" || pathName === "/books/new" || pathName === "/sign-in" || pathName === "/sign-up" || pathName === "/library") return null;
-
     const handleSignOut = async () => {
         await authClient.signOut();
         router.push("/");

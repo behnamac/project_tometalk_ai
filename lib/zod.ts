@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import {MAX_FILE_SIZE, ACCEPTED_PDF_TYPES, ACCEPTED_IMAGE_TYPES, MAX_IMAGE_SIZE} from './constants';
+import {MAX_FILE_SIZE, ACCEPTED_PDF_TYPES, ACCEPTED_IMAGE_TYPES, MAX_IMAGE_SIZE} from './constants/upload';
 
 export const UploadSchema = z.object({
     title: z.string().min(1, "Title is required").max(100, "Title is too long"),

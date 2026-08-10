@@ -15,38 +15,30 @@ const resolvePlan = (subscriptions?: { status: string; plan: string }[]): PlanTy
 
 export const useSubscription = () => {
     const { data: session, isPending: isSessionPending } = authClient.useSession();
-    const [plan, setPlan] = useState<PlanType>(PLANS.FREE);
-    const [isLoaded, setIsLoaded] = useState(false);
+    const [fetchedPlan, setFetchedPlan] = useState<PlanType | null>(null);
 
     useEffect(() => {
-        if (isSessionPending) return;
-
-        if (!session?.user) {
-            setPlan(PLANS.FREE);
-            setIsLoaded(true);
-            return;
-        }
+        if (isSessionPending || !session?.user) return;
 
         let cancelled = false;
 
         authClient.subscription.list()
             .then(({ data }) => {
-                if (!cancelled) {
-                    setPlan(resolvePlan(data ?? undefined));
-                    setIsLoaded(true);
-                }
+                if (!cancelled) setFetchedPlan(resolvePlan(data ?? undefined));
             })
             .catch(() => {
-                if (!cancelled) {
-                    setPlan(PLANS.FREE);
-                    setIsLoaded(true);
-                }
+                if (!cancelled) setFetchedPlan(PLANS.FREE);
             });
 
         return () => {
             cancelled = true;
         };
     }, [isSessionPending, session?.user]);
+
+    // No signed-in user → free plan with nothing to wait on; otherwise wait
+    // for the subscription fetch to resolve at least once.
+    const plan = !session?.user ? PLANS.FREE : fetchedPlan ?? PLANS.FREE;
+    const isLoaded = !isSessionPending && (!session?.user || fetchedPlan !== null);
 
     return {
         plan,

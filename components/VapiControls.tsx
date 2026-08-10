@@ -1,11 +1,12 @@
 'use client';
 
 import {Mic, MicOff} from "lucide-react";
-import useVapi from "@/hooks/useVapi";
+import {useVapi} from "@/hooks/useVapi";
 import {IBook} from "@/types";
 import Image from "next/image";
 import Transcript from "@/components/Transcript";
 import {toast} from "sonner";
+import {formatDuration} from "@/lib/utils";
 
 import {useRouter} from "next/navigation";
 import {useEffect} from "react";
@@ -23,12 +24,6 @@ const VapiControls = ({ book }: { book: IBook }) => {
             clearError();
         }
     }, [isBillingError, limitError, router, clearError]);
-
-    const formatDuration = (seconds: number) => {
-        const mins = Math.floor(seconds / 60);
-        const secs = seconds % 60;
-        return `${mins}:${secs.toString().padStart(2, '0')}`;
-    };
 
     const getStatusDisplay = () => {
         switch (status) {

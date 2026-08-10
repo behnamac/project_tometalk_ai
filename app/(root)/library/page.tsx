@@ -2,7 +2,7 @@ import React from 'react'
 import BookCard from "@/components/BookCard";
 import {getAllBooks} from "@/lib/actions/book.actions";
 import Search from "@/components/Search";
-import LibraryHeader from "@/components/LibraryHeader";
+import AppHeader from "@/components/AppHeader";
 
 const Page = async ({ searchParams }: { searchParams: Promise<{ query?: string }> }) => {
     const { query } = await searchParams;
@@ -12,7 +12,7 @@ const Page = async ({ searchParams }: { searchParams: Promise<{ query?: string }
 
     return (
         <div className="library-dark">
-            <LibraryHeader />
+            <AppHeader />
 
             <main className="library-main">
                 <div className="library-title-row">

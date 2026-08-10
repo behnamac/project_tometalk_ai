@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Serif, IBM_Plex_Sans, Mona_Sans, Space_Grotesk } from "next/font/google";
 
-import Navbar from "@/components/Navbar";
 import "./globals.css";
 import {Toaster} from "@/components/ui/sonner";
 
@@ -49,7 +48,6 @@ export default function RootLayout({
         className={`${ibmPlexSerif.variable} ${monaSans.variable} ${spaceGrotesk.variable} ${ibmPlexSans.variable} relative font-sans antialiased`}
         suppressHydrationWarning
       >
-        <Navbar />
         {children}
         <Toaster />
       </body>
