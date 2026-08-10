@@ -9,7 +9,6 @@ import {cn} from "@/lib/utils";
 const navItems = [
     { label: "Library", href: "/library" },
     { label: "Add New", href: "/books/new" },
-    { label: "Pricing", href: "/subscriptions" },
 ]
 
 const Navbar = () => {
@@ -47,9 +46,9 @@ const Navbar = () => {
                     <div className="flex gap-7.5 items-center">
                         {session?.user ? (
                             <div className="nav-user-link">
-                                <Link href="/subscriptions" className="nav-user-name">
+                                <span className="nav-user-name">
                                     {session.user.name}
-                                </Link>
+                                </span>
                                 <button onClick={handleSignOut} className="nav-btn">
                                     Sign out
                                 </button>

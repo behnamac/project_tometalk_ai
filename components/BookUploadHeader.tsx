@@ -9,7 +9,6 @@ import { cn } from "@/lib/utils";
 const navItems = [
     { label: "Library", href: "/library" },
     { label: "Add New", href: "/books/new" },
-    { label: "Pricing", href: "/subscriptions" },
 ];
 
 const BookUploadHeader = () => {
@@ -51,9 +50,9 @@ const BookUploadHeader = () => {
 
                     {session?.user ? (
                         <div className="flex items-center gap-4">
-                            <Link href="/subscriptions" className="book-upload-nav-link book-upload-nav-link-default">
+                            <span className="book-upload-nav-link book-upload-nav-link-default">
                                 {session.user.name}
-                            </Link>
+                            </span>
                             <button onClick={handleSignOut} className="book-upload-nav-link book-upload-nav-link-default cursor-pointer">
                                 Sign out
                             </button>

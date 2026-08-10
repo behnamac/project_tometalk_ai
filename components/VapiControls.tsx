@@ -17,9 +17,7 @@ const VapiControls = ({ book }: { book: IBook }) => {
     useEffect(() => {
         if (limitError) {
             toast.error(limitError);
-            if (isBillingError) {
-                router.push("/subscriptions");
-            } else {
+            if (!isBillingError) {
                 router.push("/");
             }
             clearError();
