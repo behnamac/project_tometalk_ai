@@ -2,7 +2,6 @@
 
 import React, { useCallback, useRef } from 'react';
 import { useController, FieldValues } from 'react-hook-form';
-import { X } from 'lucide-react';
 import { FileUploadFieldProps } from '@/types';
 import { cn } from '@/lib/utils';
 import { FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
@@ -48,11 +47,11 @@ const FileUploader = <T extends FieldValues>({
 
     return (
         <FormItem className="w-full">
-            <FormLabel className="form-label">{label}</FormLabel>
+            <FormLabel className="book-upload-label">{label}</FormLabel>
             <FormControl>
                 <div
                     className={cn(
-                        'upload-dropzone border-2 border-dashed border-[#8B7355]/20',
+                        'upload-dropzone border-2 border-dashed',
                         isUploaded && 'upload-dropzone-uploaded'
                     )}
                     onClick={() => !disabled && inputRef.current?.click()}
@@ -67,14 +66,14 @@ const FileUploader = <T extends FieldValues>({
                     />
 
                     {isUploaded ? (
-                        <div className="flex flex-col items-center relative w-full px-4">
+                        <div className="flex flex-col items-center relative w-full px-4 gap-2">
                             <p className="upload-dropzone-text line-clamp-1">{(value as File).name}</p>
                             <button
                                 type="button"
                                 onClick={onRemove}
-                                className="upload-dropzone-remove mt-2"
+                                className="upload-dropzone-remove"
                             >
-                                <X className="w-5 h-5" />
+                                Remove
                             </button>
                         </div>
                     ) : (

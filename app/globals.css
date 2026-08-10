@@ -201,6 +201,27 @@
   color: var(--foreground);
 }
 
+/* Fixed dark editorial theme for the "Add a New Book" wizard, independent of global theme state */
+.book-upload-dark {
+  --background: #1a1918;
+  --foreground: #f7f4ee;
+  --card: #211f1d;
+  --card-foreground: #f7f4ee;
+  --muted-foreground: #8a847a;
+  --border: rgba(247, 244, 238, 0.1);
+  --input: rgba(247, 244, 238, 0.15);
+  --ring: #c8553d;
+  --blue: #c8553d;
+
+  --font-serif: var(--font-space-grotesk);
+  --font-sans: var(--font-ibm-plex-sans);
+  font-family: var(--font-ibm-plex-sans);
+
+  background: var(--background);
+  color: var(--foreground);
+  min-height: 100vh;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -308,6 +329,87 @@
   .new-book-wrapper {
     @apply mx-auto max-w-2xl space-y-6 mt-12 mb-20;
   }
+
+  /* ===========================================
+     BOOK UPLOAD WIZARD (dark editorial redesign)
+     =========================================== */
+  .book-upload-header {
+    @apply sticky top-0 z-50 border-b;
+    background: rgba(26, 25, 24, 0.92);
+    backdrop-filter: blur(8px);
+    border-color: var(--landing-line, rgba(247, 244, 238, 0.1));
+  }
+  .book-upload-logo-text {
+    @apply font-serif text-[17px] font-semibold text-[var(--foreground)];
+  }
+  .book-upload-nav-link {
+    @apply text-sm font-medium no-underline transition-opacity;
+  }
+  .book-upload-nav-link-default {
+    @apply text-[var(--muted-foreground)] hover:opacity-80;
+  }
+  .book-upload-nav-link-active {
+    @apply text-[var(--foreground)] border-b-2 border-[var(--ring)] pb-[3px];
+  }
+  .book-upload-main {
+    @apply max-w-[680px] mx-auto px-5 pt-18 pb-24;
+  }
+  .book-upload-title {
+    @apply font-serif font-semibold text-4xl md:text-[42px] tracking-[-0.01em] text-[var(--foreground)];
+  }
+  .book-upload-subtitle {
+    @apply mx-auto max-w-[420px] text-lg leading-relaxed text-[var(--muted-foreground)];
+  }
+  .book-upload-wrapper {
+    @apply mx-auto max-w-2xl;
+  }
+  .book-upload-steps {
+    @apply flex items-center justify-center gap-2.5 mb-11;
+  }
+  .book-upload-step-circle {
+    @apply w-7 h-7 rounded-full flex items-center justify-center font-serif font-semibold text-[13px];
+  }
+  .book-upload-step-circle-current {
+    @apply bg-[var(--ring)] text-[var(--background)];
+  }
+  .book-upload-step-circle-done {
+    background: rgba(200, 85, 61, 0.25);
+    color: var(--ring);
+  }
+  .book-upload-step-circle-upcoming {
+    background: rgba(247, 244, 238, 0.08);
+    color: var(--muted-foreground);
+  }
+  .book-upload-step-label {
+    @apply text-[13px] font-medium;
+  }
+  .book-upload-step-label-upcoming {
+    @apply text-[var(--muted-foreground)];
+  }
+  .book-upload-step-line {
+    @apply w-8 h-px;
+    background: rgba(247, 244, 238, 0.15);
+  }
+  .book-upload-step-line-done {
+    background: var(--ring);
+  }
+  .book-upload-label {
+    @apply block mb-2.5 text-[15px] font-medium text-[var(--foreground)];
+  }
+  .book-upload-input {
+    @apply !w-full !h-auto !rounded-[10px] !border !border-[var(--input)] !bg-[var(--card)] !px-4 !py-[15px] !text-base !text-[var(--foreground)] placeholder:!text-[var(--muted-foreground)];
+  }
+  .book-upload-btn-primary {
+    @apply w-full h-14 rounded-xl border-0 font-serif font-bold text-lg cursor-pointer transition-colors bg-[var(--ring)] text-[var(--background)] hover:opacity-90;
+  }
+  .book-upload-btn-primary-disabled {
+    @apply cursor-not-allowed hover:opacity-100;
+    background: rgba(247, 244, 238, 0.08);
+    color: #6b655c;
+  }
+  .book-upload-btn-secondary {
+    @apply h-14 rounded-xl border border-[var(--input)] bg-transparent font-serif font-semibold text-base text-[var(--foreground)] cursor-pointer transition-colors hover:bg-[rgba(247,244,238,0.05)];
+  }
   .file-upload-shadow {
     @apply relative z-20 flex flex-col justify-center items-center p-7;
   }
@@ -319,7 +421,7 @@
     @apply fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm;
   }
   .loading-shadow-wrapper {
-    @apply rounded-xl p-10 w-fit md:min-w-md;
+    @apply rounded-xl p-10 w-fit md:min-w-md bg-[#211f1d];
   }
   .loading-shadow {
     @apply rounded-xl flex flex-col items-center space-y-6;
@@ -328,7 +430,10 @@
     @apply animate-spin origin-center mx-auto;
   }
   .loading-title {
-    @apply text-2xl font-bold text-[var(--text-primary)];
+    @apply text-2xl font-bold text-[#f7f4ee];
+  }
+  .loading-description {
+    @apply text-[#8a847a];
   }
   .loading-progress {
     @apply w-full space-y-2 text-sm;
@@ -716,27 +821,41 @@
   /* ===========================================
      VOICE SELECTOR COMPONENT
      =========================================== */
+  .voice-selector-category {
+    @apply text-[13px] font-medium text-[#8a847a];
+  }
   .voice-selector-options {
-    @apply flex gap-4;
+    @apply flex gap-3.5;
   }
   .voice-selector-option {
-    @apply flex-1 flex items-center justify-center gap-3 p-4 border border-[var(--border-subtle)] rounded-lg cursor-pointer transition-all;
-    box-shadow: var(--shadow-soft-sm);
-
-    &:hover {
-      box-shadow: var(--shadow-soft);
-      transform: translateY(-2px);
-    }
+    @apply flex-1 flex items-start p-4 rounded-xl cursor-pointer transition-all border;
   }
   .voice-selector-option-selected {
-    @apply bg-[var(--accent-light)] border-[var(--accent-warm)];
+    background: rgba(200, 85, 61, 0.1);
+    border-color: rgba(200, 85, 61, 0.6);
   }
   .voice-selector-option-default {
-    @apply bg-white;
+    @apply bg-[#211f1d];
+    border-color: rgba(247, 244, 238, 0.1);
 
     &:hover {
-      @apply bg-[var(--bg-secondary)];
+      background: rgba(247, 244, 238, 0.04);
     }
+  }
+  .voice-selector-dot {
+    @apply w-4 h-4 rounded-full shrink-0 box-border;
+    border: 1.5px solid rgba(247, 244, 238, 0.3);
+    background: transparent;
+  }
+  .voice-selector-dot-selected {
+    border: 5px solid #c8553d;
+    background: #1a1918;
+  }
+  .voice-selector-name {
+    @apply font-semibold text-[15px] text-[#f7f4ee];
+  }
+  .voice-selector-description {
+    @apply text-xs leading-relaxed text-[#8a847a] mt-0.5;
   }
   .voice-selector-option-disabled {
     @apply opacity-50 cursor-not-allowed;
@@ -783,36 +902,38 @@
      UPLOAD FORM COMPONENT
      =========================================== */
   .upload-dropzone {
-    @apply flex flex-col items-center justify-center h-[165px] bg-white rounded-[6px] cursor-pointer transition-all;
+    @apply flex flex-col items-center justify-center h-[150px] rounded-xl cursor-pointer transition-all bg-[#211f1d];
+    border-color: rgba(200, 85, 61, 0.35) !important;
 
     &:hover {
-      @apply bg-gray-50;
+      background: rgba(200, 85, 61, 0.05);
     }
   }
   .upload-dropzone-uploaded {
-    @apply bg-[#f3e4c7];
+    background: rgba(200, 85, 61, 0.08);
+    border-style: solid !important;
 
     .upload-dropzone-text {
-      @apply text-[#663820];
+      @apply text-[#c8553d];
     }
     .upload-dropzone-hint {
-      @apply text-[#8B7355];
+      @apply text-[#8a847a];
     }
   }
   .upload-dropzone-icon {
-    @apply w-[48px] h-[48px] mb-2 text-[#8B7355];
+    @apply w-[34px] h-[34px] mb-2.5 text-[#c8553d];
   }
   .upload-dropzone-text {
-    @apply text-[#777] text-lg font-medium text-center;
+    @apply text-[#f7f4ee] text-[15px] font-medium text-center;
   }
   .upload-dropzone-hint {
-    @apply text-[#777] text-sm mt-1;
+    @apply text-[#8a847a] text-[13px] mt-1;
   }
   .upload-dropzone-remove {
-    @apply flex items-center justify-center w-6 h-6 text-red-500 transition-colors cursor-pointer;
+    @apply text-[13px] text-[#8a847a] underline transition-colors cursor-pointer bg-transparent border-0;
 
     &:hover {
-      @apply text-red-600;
+      @apply text-[#f7f4ee];
     }
   }
   .form-label {
