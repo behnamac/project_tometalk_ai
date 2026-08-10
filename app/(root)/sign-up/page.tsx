@@ -1,44 +1,7 @@
-'use client';
-
-import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { toast } from 'sonner';
-
-import { SignUpSchema } from '@/lib/zod';
-import { SignUpFormValues } from '@/types';
-import { authClient } from '@/lib/auth-client';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
 
 const SignUpPage = () => {
-    const [isSubmitting, setIsSubmitting] = useState(false);
-    const router = useRouter();
-
-    const form = useForm<SignUpFormValues>({
-        resolver: zodResolver(SignUpSchema),
-        defaultValues: { name: '', email: '', password: '' },
-    });
-
-    const onSubmit = async (data: SignUpFormValues) => {
-        setIsSubmitting(true);
-
-        await authClient.signUp.email(data, {
-            onSuccess: () => {
-                router.push('/library');
-            },
-            onError: (ctx) => {
-                toast.error(ctx.error.message || 'Failed to create account');
-            },
-        });
-
-        setIsSubmitting(false);
-    };
-
     return (
         <div className="login-dark flex min-h-screen">
             <div className="login-visual-panel hidden md:flex">
@@ -63,79 +26,19 @@ const SignUpPage = () => {
             <div className="login-form-panel">
                 <div className="login-card">
                     <Image src="/assets/logo.png" alt="TomeTalk" width={32} height={32} className="login-logo" />
-                    <h1 className="login-title">Create your account</h1>
-                    <p className="login-subtitle">Start transforming your books into conversations.</p>
+                    <h1 className="login-title">Access by request</h1>
+                    <p className="login-subtitle">
+                        Bookified is currently in private testing. If you&apos;d like to try it out, send me a quick
+                        email and I&apos;ll get you set up.
+                    </p>
 
-                    <Form {...form}>
-                        <form onSubmit={form.handleSubmit(onSubmit)} className="login-form-fields">
-                            <FormField
-                                control={form.control}
-                                name="name"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel className="login-label">Name</FormLabel>
-                                        <FormControl>
-                                            <Input
-                                                className="login-input"
-                                                placeholder="Your name"
-                                                autoComplete="name"
-                                                {...field}
-                                                disabled={isSubmitting}
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-
-                            <FormField
-                                control={form.control}
-                                name="email"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel className="login-label">Email</FormLabel>
-                                        <FormControl>
-                                            <Input
-                                                className="login-input"
-                                                type="email"
-                                                placeholder="you@example.com"
-                                                autoComplete="email"
-                                                {...field}
-                                                disabled={isSubmitting}
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-
-                            <FormField
-                                control={form.control}
-                                name="password"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel className="login-label">Password</FormLabel>
-                                        <FormControl>
-                                            <Input
-                                                className="login-input"
-                                                type="password"
-                                                placeholder="At least 8 characters"
-                                                autoComplete="new-password"
-                                                {...field}
-                                                disabled={isSubmitting}
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-
-                            <Button type="submit" className="login-btn-primary" disabled={isSubmitting}>
-                                <span className="login-btn-sweep" />
-                                <span className="login-btn-text">{isSubmitting ? 'Creating account...' : 'Sign Up'}</span>
-                            </Button>
-                        </form>
-                    </Form>
+                    <a
+                        href="mailto:hello@behnamsepehri.nl?subject=Bookified%20access%20request"
+                        className="login-btn-primary flex items-center justify-center no-underline"
+                    >
+                        <span className="login-btn-sweep" />
+                        <span className="login-btn-text">Email me to get access</span>
+                    </a>
 
                     <p className="login-footer-text">
                         Already have an account?{' '}
