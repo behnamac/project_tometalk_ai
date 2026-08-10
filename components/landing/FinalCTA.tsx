@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "motion/react";
-import DocumentVisual from "./DocumentVisual";
+import OrbitingCircleVisual from "./OrbitingCircleVisual";
 import { APP_ENTRY_ROUTE, FINAL_CTA_CONTENT } from "./content";
 
 const FinalCTA = () => {
@@ -22,7 +22,7 @@ const FinalCTA = () => {
                     transition={{ duration: 0.7, ease: "easeOut" }}
                     className="order-2 lg:order-1 motion-safe:animate-[float_6s_ease-in-out_infinite]"
                 >
-                    <DocumentVisual />
+                    <OrbitingCircleVisual />
                 </motion.div>
 
                 <motion.div

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "motion/react";
-import DocumentVisual from "./DocumentVisual";
+import BookFlipVisual from "./BookFlipVisual";
 import { APP_ENTRY_ROUTE, HERO_CONTENT } from "./content";
 
 const HeroSection = () => {
@@ -41,7 +41,7 @@ const HeroSection = () => {
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.8, ease: "easeOut", delay: 0.15 }}
                 >
-                    <DocumentVisual />
+                    <BookFlipVisual />
                 </motion.div>
             </div>
         </section>

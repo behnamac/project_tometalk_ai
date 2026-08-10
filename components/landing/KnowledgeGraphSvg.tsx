@@ -1,6 +1,3 @@
-"use client";
-
-import { motion, type MotionValue } from "motion/react";
 import { KNOWLEDGE_TOPICS } from "./content";
 
 const NODES = [
@@ -21,33 +18,14 @@ const EDGES = [
     { from: 3, to: 4 },
 ] as const;
 
-interface KnowledgeGraphSvgProps {
-    nodeOpacities: readonly [
-        MotionValue<number>,
-        MotionValue<number>,
-        MotionValue<number>,
-        MotionValue<number>,
-        MotionValue<number>,
-        MotionValue<number>,
-    ];
-    edgeProgress: readonly [
-        MotionValue<number>,
-        MotionValue<number>,
-        MotionValue<number>,
-        MotionValue<number>,
-        MotionValue<number>,
-        MotionValue<number>,
-    ];
-}
-
-const KnowledgeGraphSvg = ({ nodeOpacities, edgeProgress }: KnowledgeGraphSvgProps) => {
+const KnowledgeGraphSvg = () => {
     return (
         <svg viewBox="0 0 400 300" className="w-full max-w-lg" role="img" aria-label="Diagram of connected knowledge topics extracted from a document">
-            {EDGES.map((edge, index) => {
+            {EDGES.map((edge) => {
                 const from = NODES[edge.from];
                 const to = NODES[edge.to];
                 return (
-                    <motion.line
+                    <line
                         key={`${edge.from}-${edge.to}`}
                         x1={from.x}
                         y1={from.y}
@@ -55,13 +33,12 @@ const KnowledgeGraphSvg = ({ nodeOpacities, edgeProgress }: KnowledgeGraphSvgPro
                         y2={to.y}
                         stroke="var(--landing-line)"
                         strokeWidth={1.5}
-                        style={{ pathLength: edgeProgress[index] }}
                     />
                 );
             })}
 
             {NODES.map((node, index) => (
-                <motion.g key={KNOWLEDGE_TOPICS[index]} style={{ opacity: nodeOpacities[index] }}>
+                <g key={KNOWLEDGE_TOPICS[index]}>
                     <circle cx={node.x} cy={node.y} r={5} fill="var(--blue)" />
                     <text
                         x={node.x}
@@ -71,7 +48,7 @@ const KnowledgeGraphSvg = ({ nodeOpacities, edgeProgress }: KnowledgeGraphSvgPro
                     >
                         {KNOWLEDGE_TOPICS[index]}
                     </text>
-                </motion.g>
+                </g>
             ))}
         </svg>
     );
