@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { authClient } from "@/lib/auth-client";
@@ -13,8 +14,6 @@ import {
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuLabel,
-    DropdownMenuRadioGroup,
-    DropdownMenuRadioItem,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
@@ -29,6 +28,7 @@ const AppHeader = () => {
     const router = useRouter();
     const { data: session } = authClient.useSession();
     const { t, i18n } = useTranslation();
+    const [headerEl, setHeaderEl] = useState<HTMLElement | null>(null);
 
     const handleSignOut = async () => {
         await authClient.signOut();
@@ -42,7 +42,7 @@ const AppHeader = () => {
     };
 
     return (
-        <header className="app-header">
+        <header className="app-header" ref={setHeaderEl}>
             <div className="wrapper flex items-center justify-between py-[18px]">
                 <Link href="/" className="flex items-center gap-2.5">
                     <Image src="/assets/logo.png" alt="TomeTalk" width={26} height={26} className="rounded-[7px]" />
@@ -78,21 +78,37 @@ const AppHeader = () => {
                                     </Avatar>
                                 </button>
                             </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end">
+                            <DropdownMenuContent align="end" container={headerEl} className="app-header-dropdown-content">
                                 <DropdownMenuLabel>
-                                    <span className="block font-medium truncate">{session.user.name}</span>
-                                    <span className="block text-xs font-normal text-[var(--muted-foreground)] truncate">
-                                        {session.user.email}
-                                    </span>
+                                    <span className="app-header-dropdown-name">{session.user.name}</span>
+                                    <span className="app-header-dropdown-email">{session.user.email}</span>
                                 </DropdownMenuLabel>
                                 <DropdownMenuSeparator />
-                                <DropdownMenuLabel className="text-xs text-[var(--muted-foreground)]">
+                                <DropdownMenuLabel className="app-header-dropdown-sublabel">
                                     {t("language.label")}
+                                    <div className="app-header-lang-switch" role="group" aria-label={t("language.label")}>
+                                        <button
+                                            type="button"
+                                            onClick={() => handleLanguageChange("en")}
+                                            className={cn(
+                                                "app-header-lang-switch-btn",
+                                                i18n.language === "en" && "app-header-lang-switch-btn-active"
+                                            )}
+                                        >
+                                            {t("language.en")}
+                                        </button>
+                                        <button
+                                            type="button"
+                                            onClick={() => handleLanguageChange("de")}
+                                            className={cn(
+                                                "app-header-lang-switch-btn",
+                                                i18n.language === "de" && "app-header-lang-switch-btn-active"
+                                            )}
+                                        >
+                                            {t("language.de")}
+                                        </button>
+                                    </div>
                                 </DropdownMenuLabel>
-                                <DropdownMenuRadioGroup value={i18n.language} onValueChange={handleLanguageChange}>
-                                    <DropdownMenuRadioItem value="en">{t("language.en")}</DropdownMenuRadioItem>
-                                    <DropdownMenuRadioItem value="de">{t("language.de")}</DropdownMenuRadioItem>
-                                </DropdownMenuRadioGroup>
                                 <DropdownMenuSeparator />
                                 <DropdownMenuItem onClick={handleSignOut} className="cursor-pointer">
                                     {t("nav.signOut")}

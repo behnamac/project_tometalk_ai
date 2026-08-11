@@ -206,6 +206,10 @@
   --card-foreground: #f7f4ee;
   --popover: #211f1d;
   --popover-foreground: #f7f4ee;
+  --secondary: #2d2a26;
+  --secondary-foreground: #f7f4ee;
+  --accent: #2d2a26;
+  --accent-foreground: #f7f4ee;
   --muted-foreground: #8a847a;
   --border: rgba(247, 244, 238, 0.1);
   --input: rgba(247, 244, 238, 0.15);
@@ -229,6 +233,10 @@
   --card-foreground: #f7f4ee;
   --popover: #211f1d;
   --popover-foreground: #f7f4ee;
+  --secondary: #2d2a26;
+  --secondary-foreground: #f7f4ee;
+  --accent: #2d2a26;
+  --accent-foreground: #f7f4ee;
   --muted-foreground: #8a847a;
   --border: rgba(247, 244, 238, 0.1);
   --input: rgba(247, 244, 238, 0.15);
@@ -252,6 +260,10 @@
   --card-foreground: #f7f4ee;
   --popover: #211f1d;
   --popover-foreground: #f7f4ee;
+  --secondary: #2d2a26;
+  --secondary-foreground: #f7f4ee;
+  --accent: #2d2a26;
+  --accent-foreground: #f7f4ee;
   --muted-foreground: #8a847a;
   --border: rgba(247, 244, 238, 0.1);
   --input: rgba(247, 244, 238, 0.15);
@@ -275,6 +287,10 @@
   --card-foreground: #f7f4ee;
   --popover: #211f1d;
   --popover-foreground: #f7f4ee;
+  --secondary: #2d2a26;
+  --secondary-foreground: #f7f4ee;
+  --accent: #2d2a26;
+  --accent-foreground: #f7f4ee;
   --muted-foreground: #8a847a;
   --border: rgba(247, 244, 238, 0.1);
   --input: rgba(247, 244, 238, 0.15);
@@ -428,6 +444,27 @@
   }
   .app-header-avatar-fallback {
     @apply bg-[#2d2a26] text-[var(--foreground)] text-[13px] font-semibold font-serif;
+  }
+  .app-header-dropdown-content {
+    @apply rounded-[10px] min-w-[220px];
+  }
+  .app-header-dropdown-name {
+    @apply block font-serif font-medium text-[var(--foreground)] truncate;
+  }
+  .app-header-dropdown-email {
+    @apply block text-xs font-normal text-[var(--muted-foreground)] truncate mt-0.5;
+  }
+  .app-header-dropdown-sublabel {
+    @apply text-xs text-[var(--muted-foreground)];
+  }
+  .app-header-lang-switch {
+    @apply flex items-center gap-0.5 mt-1.5 p-0.5 rounded-full bg-[var(--secondary)] border border-[var(--border)];
+  }
+  .app-header-lang-switch-btn {
+    @apply flex-1 text-xs font-semibold px-2.5 py-1 rounded-full text-[var(--muted-foreground)] transition-colors cursor-pointer hover:text-[var(--foreground)];
+  }
+  .app-header-lang-switch-btn-active {
+    @apply bg-[var(--ring)] text-white hover:text-white;
   }
 
   /* ===========================================
