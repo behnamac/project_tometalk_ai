@@ -51,8 +51,8 @@ function getAuthInstance(): Auth {
 
 // Built lazily, on first real access, rather than eagerly at module import
 // time. Next.js imports every route module (transitively, via files like
-// this one) during build-time page-data collection — if the Stripe/Mongo
-// clients were constructed at module scope, that phase would require
+// this one) during build-time page-data collection — if the Stripe client
+// were constructed at module scope, that phase would require
 // STRIPE_SECRET_KEY etc. to be set just to build, even for routes that never
 // touch billing. The Proxy defers construction until the first `auth.*`
 // access, which only happens while handling a real request.

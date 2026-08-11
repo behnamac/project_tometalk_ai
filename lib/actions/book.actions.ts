@@ -75,7 +75,7 @@ export const saveBookSegments = async (
     }
 }
 
-// Searches book segments using MongoDB text search with regex fallback
+// Searches book segments using Postgres full-text search with ILIKE fallback
 export const searchBookSegments = async (
     bookId: string,
     query: string,

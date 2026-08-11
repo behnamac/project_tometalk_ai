@@ -129,7 +129,7 @@ export async function searchSegmentsForBook(
         if (keywords.length === 0) return [];
 
         // Parameterized ILIKE per keyword (not a hand-built regex) — no ReDoS
-        // surface, so no escaping helper is needed like Mongo's $regex path had.
+        // surface, so no escaping helper is needed.
         const keywordConditions = Prisma.join(
             keywords.map((k) => Prisma.sql`content ILIKE ${`%${k}%`}`),
             " OR ",
