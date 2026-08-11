@@ -1,9 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
@@ -15,9 +15,28 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 
-const SignInPage = () => {
+const DEFAULT_SUBTITLE = 'Sign in to continue your book conversations.';
+const REASON_SUBTITLES: Record<string, string> = {
+    upload: 'Please login to upload books.',
+};
+
+// Only allow redirecting back to a same-site relative path, never an absolute
+// URL, to avoid an open redirect via the `redirect` query param.
+function getSafeRedirect(redirect: string | null): string {
+    if (redirect && redirect.startsWith('/') && !redirect.startsWith('//') && !redirect.startsWith('/\\')) {
+        return redirect;
+    }
+    return '/library';
+}
+
+const SignInForm = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const router = useRouter();
+    const searchParams = useSearchParams();
+
+    const reason = searchParams.get('reason');
+    const subtitle = (reason && REASON_SUBTITLES[reason]) || DEFAULT_SUBTITLE;
+    const redirectTarget = getSafeRedirect(searchParams.get('redirect'));
 
     const form = useForm<SignInFormValues>({
         resolver: zodResolver(SignInSchema),
@@ -29,7 +48,7 @@ const SignInPage = () => {
 
         await authClient.signIn.email(data, {
             onSuccess: () => {
-                router.push('/library');
+                router.push(redirectTarget);
             },
             onError: (ctx) => {
                 toast.error(ctx.error.message || 'Failed to sign in');
@@ -64,7 +83,7 @@ const SignInPage = () => {
                 <div className="login-card">
                     <Image src="/assets/logo.png" alt="TomeTalk" width={32} height={32} className="login-logo" />
                     <h1 className="login-title">Welcome back</h1>
-                    <p className="login-subtitle">Sign in to continue your book conversations.</p>
+                    <p className="login-subtitle">{subtitle}</p>
 
                     <Form {...form}>
                         <form onSubmit={form.handleSubmit(onSubmit)} className="login-form-fields">
@@ -128,5 +147,11 @@ const SignInPage = () => {
         </div>
     );
 };
+
+const SignInPage = () => (
+    <Suspense fallback={null}>
+        <SignInForm />
+    </Suspense>
+);
 
 export default SignInPage;

@@ -52,7 +52,7 @@ export function useBookUpload() {
 
     const submit = async (data: BookUploadFormValues): Promise<boolean> => {
         if (!userId) {
-            toast.error('Please login to upload books');
+            router.push('/sign-in?reason=upload&redirect=/books/new');
             return false;
         }
 
