@@ -1,9 +1,9 @@
-import { Document, Types } from 'mongoose';
 import { ReactNode } from 'react';
 import { Control, FieldPath, FieldValues } from 'react-hook-form';
 import { LucideIcon } from 'lucide-react';
 import z from 'zod';
 import { UploadSchema, SignInSchema, SignUpSchema } from '@/lib/zod';
+import type { Book, BookSegment, VoiceSession } from '@/lib/generated/prisma/client';
 
 // ============================================
 // SHARED RESULT TYPE
@@ -17,45 +17,9 @@ export type ActionResult<T> =
 // DATABASE MODELS
 // ============================================
 
-export interface IBook extends Document {
-    _id: string;
-    userId: string;
-    title: string;
-    slug: string;
-    author: string;
-    persona?: string;
-    fileURL: string;
-    fileBlobKey: string;
-    coverURL: string;
-    coverBlobKey?: string;
-    fileSize: number;
-    totalSegments: number;
-    createdAt: Date;
-    updatedAt: Date;
-}
-
-export interface IBookSegment extends Document {
-    userId: string;
-    bookId: Types.ObjectId;
-    content: string;
-    segmentIndex: number;
-    pageNumber?: number;
-    wordCount: number;
-    createdAt: Date;
-    updatedAt: Date;
-}
-
-export interface IVoiceSession extends Document {
-    _id: string;
-    userId: string;
-    bookId: Types.ObjectId;
-    startedAt: Date;
-    endedAt?: Date;
-    durationSeconds: number;
-    billingPeriodStart: Date;
-    createdAt: Date;
-    updatedAt: Date;
-}
+export type IBook = Book;
+export type IBookSegment = BookSegment;
+export type IVoiceSession = VoiceSession;
 
 // ============================================
 // FORM & INPUT TYPES

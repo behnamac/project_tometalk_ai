@@ -1,10 +1,10 @@
 import { betterAuth } from 'better-auth';
 import { nextCookies } from 'better-auth/next-js';
-import { mongodbAdapter } from '@better-auth/mongo-adapter';
+import { prismaAdapter } from 'better-auth/adapters/prisma';
 import { stripe } from '@better-auth/stripe';
 import Stripe from 'stripe';
 
-import mongoClient, { mongoDb } from '@/database/mongo-client';
+import prisma from '@/database/prisma';
 import { PLANS } from '@/lib/subscription-constants';
 
 function buildAuth() {
@@ -17,7 +17,7 @@ function buildAuth() {
     const stripeClient = new Stripe(process.env.STRIPE_SECRET_KEY || 'sk_test_not_configured');
 
     return betterAuth({
-        database: mongodbAdapter(mongoDb, { client: mongoClient }),
+        database: prismaAdapter(prisma, { provider: 'postgresql' }),
         emailAndPassword: {
             enabled: true,
         },

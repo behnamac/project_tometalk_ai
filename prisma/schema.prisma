@@ -1,0 +1,155 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Book {
+  id            String         @id @default(cuid())
+  userId        String
+  title         String
+  slug          String         @unique
+  author        String
+  persona       String?
+  fileURL       String
+  fileBlobKey   String
+  coverURL      String?
+  coverBlobKey  String?
+  fileSize      Int
+  totalSegments Int            @default(0)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  segments      BookSegment[]
+  voiceSessions VoiceSession[]
+
+  @@index([userId])
+}
+
+model BookSegment {
+  id           String                   @id @default(cuid())
+  userId       String
+  bookId       String
+  book         Book                     @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  content      String                   @db.Text
+  // Generated column, managed entirely by migration SQL — Prisma can't
+  // express `GENERATED ALWAYS AS (...) STORED`, so it's declared Unsupported
+  // purely so schema diffing doesn't try to drop it as drift.
+  contentTsv   Unsupported("tsvector")? @map("content_tsv")
+  segmentIndex Int
+  pageNumber   Int?
+  wordCount    Int
+  createdAt    DateTime                 @default(now())
+  updatedAt    DateTime                 @updatedAt
+
+  @@unique([bookId, segmentIndex])
+  @@index([bookId, pageNumber])
+}
+
+model VoiceSession {
+  id                 String    @id @default(cuid())
+  userId             String
+  bookId             String
+  book               Book      @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  startedAt          DateTime  @default(now())
+  endedAt            DateTime?
+  durationSeconds    Int       @default(0)
+  billingPeriodStart DateTime
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+
+  @@index([userId, billingPeriodStart])
+}
+
+model User {
+  id               String    @id
+  name             String
+  email            String
+  emailVerified    Boolean   @default(false)
+  image            String?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  stripeCustomerId String?
+  sessions         Session[]
+  accounts         Account[]
+
+  @@unique([email])
+  @@map("user")
+}
+
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([token])
+  @@index([userId])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@index([userId])
+  @@map("account")
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([identifier])
+  @@map("verification")
+}
+
+model Subscription {
+  id                   String    @id
+  plan                 String
+  referenceId          String
+  stripeCustomerId     String?
+  stripeSubscriptionId String?
+  status               String?   @default("incomplete")
+  periodStart          DateTime?
+  periodEnd            DateTime?
+  trialStart           DateTime?
+  trialEnd             DateTime?
+  cancelAtPeriodEnd    Boolean?  @default(false)
+  cancelAt             DateTime?
+  canceledAt           DateTime?
+  endedAt              DateTime?
+  seats                Int?
+  billingInterval      String?
+  stripeScheduleId     String?
+
+  @@map("subscription")
+}

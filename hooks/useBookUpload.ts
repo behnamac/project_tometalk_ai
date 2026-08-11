@@ -107,7 +107,7 @@ export function useBookUpload() {
                 return true;
             }
 
-            const segments = await saveBookSegments(book._id, userId, parsedPDF.content);
+            const segments = await saveBookSegments(book.id, userId, parsedPDF.content);
 
             if (!segments.success) {
                 toast.error('Failed to save book segments');

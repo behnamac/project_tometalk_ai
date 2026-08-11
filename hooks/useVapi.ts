@@ -168,7 +168,7 @@ export function useVapi(book: IBook) {
 
         try {
             // Check session limits and create session record
-            const result = await startVoiceSession(book._id);
+            const result = await startVoiceSession(book.id);
 
             if (!result.success) {
                 setLimitError(result.error || 'Session limit reached. Please upgrade your plan.');
@@ -188,7 +188,7 @@ export function useVapi(book: IBook) {
                 variableValues: {
                     title: book.title,
                     author: book.author,
-                    bookId: book._id,
+                    bookId: book.id,
                 },
                 voice: {
                     provider: '11labs' as const,
@@ -205,7 +205,7 @@ export function useVapi(book: IBook) {
             setStatus('idle');
             setLimitError('Failed to start voice session. Please try again.');
         }
-    }, [book._id, book.title, book.author, voice, userId]);
+    }, [book.id, book.title, book.author, voice, userId]);
 
     const stop = useCallback(() => {
         isStoppingRef.current = true;

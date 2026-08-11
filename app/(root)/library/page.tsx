@@ -23,7 +23,7 @@ const Page = async ({ searchParams }: { searchParams: Promise<{ query?: string }
                 {books.length > 0 ? (
                     <div className="library-books-grid">
                         {books.map((book) => (
-                            <BookCard key={book._id} title={book.title} author={book.author} coverURL={book.coverURL} slug={book.slug} />
+                            <BookCard key={book.id} title={book.title} author={book.author} coverURL={book.coverURL || "/images/book-placeholder.png"} slug={book.slug} />
                         ))}
                     </div>
                 ) : (

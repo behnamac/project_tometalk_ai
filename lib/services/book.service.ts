@@ -1,15 +1,13 @@
 import { headers } from "next/headers";
 import { revalidatePath } from "next/cache";
-import mongoose from "mongoose";
 
 import { auth } from "@/lib/auth";
-import { connectToDatabase } from "@/database/mongoose";
-import Book from "@/database/models/book.model";
-import BookSegment from "@/database/models/book-segment.model";
+import prisma from "@/database/prisma";
+import { Prisma } from "@/lib/generated/prisma/client";
 import { getUserPlan } from "@/lib/subscription.server";
 import { PLAN_LIMITS } from "@/lib/subscription-constants";
-import { escapeRegex, generateSlug, serializeData } from "@/lib/utils";
-import { CreateBook, IBook, IBookSegment, TextSegment } from "@/types";
+import { generateSlug } from "@/lib/utils";
+import { CreateBook, IBook, TextSegment } from "@/types";
 
 export class BillingLimitError extends Error {
     constructor(message: string) {
@@ -23,35 +21,32 @@ export interface CreateBookOutcome {
     alreadyExists: boolean;
 }
 
-export type BookSegmentResult = Pick<
-    IBookSegment,
-    "_id" | "bookId" | "content" | "segmentIndex" | "pageNumber" | "wordCount"
->;
+export interface BookSegmentResult {
+    id: string;
+    bookId: string;
+    content: string;
+    segmentIndex: number;
+    pageNumber: number | null;
+    wordCount: number;
+}
 
 export async function listBooks(search?: string): Promise<IBook[]> {
-    await connectToDatabase();
-
-    let query = {};
-
-    if (search) {
-        const escapedSearch = escapeRegex(search);
-        const regex = new RegExp(escapedSearch, "i");
-        query = {
-            $or: [{ title: { $regex: regex } }, { author: { $regex: regex } }],
-        };
-    }
-
-    const books = await Book.find(query).sort({ createdAt: -1 }).lean();
-    return serializeData(books);
+    return prisma.book.findMany({
+        where: search
+            ? {
+                  OR: [
+                      { title: { contains: search, mode: "insensitive" } },
+                      { author: { contains: search, mode: "insensitive" } },
+                  ],
+              }
+            : undefined,
+        orderBy: { createdAt: "desc" },
+    });
 }
 
 export async function findBookByTitle(title: string): Promise<IBook | null> {
-    await connectToDatabase();
-
     const slug = generateSlug(title);
-    const book = await Book.findOne({ slug }).lean();
-
-    return book ? serializeData(book) : null;
+    return prisma.book.findUnique({ where: { slug } });
 }
 
 export async function createBookForUser(data: CreateBook): Promise<CreateBookOutcome> {
@@ -62,18 +57,16 @@ export async function createBookForUser(data: CreateBook): Promise<CreateBookOut
         throw new Error("Unauthorized");
     }
 
-    await connectToDatabase();
-
     const slug = generateSlug(data.title);
-    const existingBook = await Book.findOne({ slug }).lean();
+    const existingBook = await prisma.book.findUnique({ where: { slug } });
 
     if (existingBook) {
-        return { book: serializeData(existingBook), alreadyExists: true };
+        return { book: existingBook, alreadyExists: true };
     }
 
     const plan = await getUserPlan();
     const limits = PLAN_LIMITS[plan];
-    const bookCount = await Book.countDocuments({ userId });
+    const bookCount = await prisma.book.count({ where: { userId } });
 
     if (bookCount >= limits.maxBooks) {
         throw new BillingLimitError(
@@ -81,19 +74,16 @@ export async function createBookForUser(data: CreateBook): Promise<CreateBookOut
         );
     }
 
-    const book = await Book.create({ ...data, userId, slug, totalSegments: 0 });
+    const book = await prisma.book.create({ data: { ...data, userId, slug, totalSegments: 0 } });
     revalidatePath("/library");
 
-    return { book: serializeData(book), alreadyExists: false };
+    return { book, alreadyExists: false };
 }
 
 // Only returns the book if it belongs to the requesting user — prevents one
 // user from reading another user's book by guessing/enumerating slugs.
 export async function findBookBySlugForUser(slug: string, userId: string): Promise<IBook | null> {
-    await connectToDatabase();
-
-    const book = await Book.findOne({ slug, userId }).lean();
-    return book ? serializeData(book) : null;
+    return prisma.book.findFirst({ where: { slug, userId } });
 }
 
 export async function saveSegmentsForBook(
@@ -101,69 +91,59 @@ export async function saveSegmentsForBook(
     userId: string,
     segments: TextSegment[],
 ): Promise<number> {
-    await connectToDatabase();
+    const segmentsToInsert = segments.map(({ text, segmentIndex, pageNumber, wordCount }) => ({
+        userId,
+        bookId,
+        content: text,
+        segmentIndex,
+        pageNumber,
+        wordCount,
+    }));
 
-    const dbSession = await mongoose.startSession();
-
-    try {
-        await dbSession.withTransaction(async () => {
-            const segmentsToInsert = segments.map(({ text, segmentIndex, pageNumber, wordCount }) => ({
-                userId,
-                bookId,
-                content: text,
-                segmentIndex,
-                pageNumber,
-                wordCount,
-            }));
-
-            await BookSegment.insertMany(segmentsToInsert, { session: dbSession });
-            await Book.findByIdAndUpdate(bookId, { totalSegments: segments.length }, { session: dbSession });
-        });
-    } finally {
-        await dbSession.endSession();
-    }
+    await prisma.$transaction([
+        prisma.bookSegment.createMany({ data: segmentsToInsert }),
+        prisma.book.update({ where: { id: bookId }, data: { totalSegments: segments.length } }),
+    ]);
 
     return segments.length;
 }
 
-// Searches book segments using MongoDB text search with a regex fallback.
+// Searches book segments using Postgres full-text search with an ILIKE fallback.
 export async function searchSegmentsForBook(
     bookId: string,
     query: string,
     limit: number = 5,
 ): Promise<BookSegmentResult[]> {
-    await connectToDatabase();
-
-    const bookObjectId = new mongoose.Types.ObjectId(bookId);
-
-    let segments: BookSegmentResult[] = [];
-    try {
-        segments = await BookSegment.find({
-            bookId: bookObjectId,
-            $text: { $search: query },
-        })
-            .select("_id bookId content segmentIndex pageNumber wordCount")
-            .sort({ score: { $meta: "textScore" } })
-            .limit(limit)
-            .lean();
-    } catch {
-        // Text index may not exist — fall through to regex fallback
-        segments = [];
-    }
+    let segments = await prisma.$queryRaw<BookSegmentResult[]>`
+        SELECT id, "bookId", content, "segmentIndex", "pageNumber", "wordCount"
+        FROM "BookSegment"
+        WHERE "bookId" = ${bookId}
+          AND content_tsv @@ plainto_tsquery('english', ${query})
+        ORDER BY ts_rank(content_tsv, plainto_tsquery('english', ${query})) DESC
+        LIMIT ${limit}
+    `;
 
     if (segments.length === 0) {
         const keywords = query.split(/\s+/).filter((k) => k.length > 2);
-        const pattern = keywords.map(escapeRegex).join("|");
 
-        segments = await BookSegment.find({
-            bookId: bookObjectId,
-            content: { $regex: pattern, $options: "i" },
-        })
-            .select("_id bookId content segmentIndex pageNumber wordCount")
-            .sort({ segmentIndex: 1 })
-            .limit(limit)
-            .lean();
+        if (keywords.length === 0) return [];
+
+        // Parameterized ILIKE per keyword (not a hand-built regex) — no ReDoS
+        // surface, so no escaping helper is needed like Mongo's $regex path had.
+        const keywordConditions = Prisma.join(
+            keywords.map((k) => Prisma.sql`content ILIKE ${`%${k}%`}`),
+            " OR ",
+        );
+
+        segments = await prisma.$queryRaw<BookSegmentResult[]>(Prisma.sql`
+            SELECT id, "bookId", content, "segmentIndex", "pageNumber", "wordCount"
+            FROM "BookSegment"
+            WHERE "bookId" = ${bookId}
+              AND (${keywordConditions})
+            ORDER BY "segmentIndex" ASC
+            LIMIT ${limit}
+        `);
     }
 
-    return serializeData(segments);
+    return segments;
 }

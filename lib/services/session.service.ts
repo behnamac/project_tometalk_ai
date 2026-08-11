@@ -1,5 +1,4 @@
-import { connectToDatabase } from "@/database/mongoose";
-import VoiceSession from "@/database/models/voice-session.model";
+import prisma from "@/database/prisma";
 import { getUserPlan } from "@/lib/subscription.server";
 import { PLAN_LIMITS, getCurrentBillingPeriodStart } from "@/lib/subscription-constants";
 import { BillingLimitError } from "@/lib/services/book.service";
@@ -10,13 +9,11 @@ export interface StartedSession {
 }
 
 export async function startSessionForUser(userId: string, bookId: string): Promise<StartedSession> {
-    await connectToDatabase();
-
     const plan = await getUserPlan();
     const limits = PLAN_LIMITS[plan];
     const billingPeriodStart = getCurrentBillingPeriodStart();
 
-    const sessionCount = await VoiceSession.countDocuments({ userId, billingPeriodStart });
+    const sessionCount = await prisma.voiceSession.count({ where: { userId, billingPeriodStart } });
 
     if (sessionCount >= limits.maxSessionsPerMonth) {
         throw new BillingLimitError(
@@ -24,31 +21,31 @@ export async function startSessionForUser(userId: string, bookId: string): Promi
         );
     }
 
-    const session = await VoiceSession.create({
-        userId,
-        bookId,
-        startedAt: new Date(),
-        billingPeriodStart,
-        durationSeconds: 0,
+    const session = await prisma.voiceSession.create({
+        data: {
+            userId,
+            bookId,
+            startedAt: new Date(),
+            billingPeriodStart,
+            durationSeconds: 0,
+        },
     });
 
     return {
-        sessionId: session._id.toString(),
+        sessionId: session.id,
         maxDurationMinutes: limits.maxDurationPerSession,
     };
 }
 
 export async function endSessionForUser(sessionId: string, userId: string, durationSeconds: number): Promise<void> {
-    await connectToDatabase();
-
-    const existing = await VoiceSession.findById(sessionId).lean();
+    const existing = await prisma.voiceSession.findUnique({ where: { id: sessionId } });
 
     if (!existing || existing.userId !== userId) {
         throw new Error("Voice session not found.");
     }
 
-    await VoiceSession.findByIdAndUpdate(sessionId, {
-        endedAt: new Date(),
-        durationSeconds,
+    await prisma.voiceSession.update({
+        where: { id: sessionId },
+        data: { endedAt: new Date(), durationSeconds },
     });
 }
