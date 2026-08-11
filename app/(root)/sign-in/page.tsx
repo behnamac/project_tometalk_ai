@@ -7,6 +7,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
+import { Eye, EyeOff } from 'lucide-react';
 
 import { SignInSchema } from '@/lib/zod';
 import { SignInFormValues } from '@/types';
@@ -31,6 +32,7 @@ function getSafeRedirect(redirect: string | null): string {
 
 const SignInForm = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
     const router = useRouter();
     const searchParams = useSearchParams();
 
@@ -115,14 +117,26 @@ const SignInForm = () => {
                                     <FormItem>
                                         <FormLabel className="login-label">Password</FormLabel>
                                         <FormControl>
-                                            <Input
-                                                className="login-input"
-                                                type="password"
-                                                placeholder="••••••••"
-                                                autoComplete="current-password"
-                                                {...field}
-                                                disabled={isSubmitting}
-                                            />
+                                            <div className="relative">
+                                                <Input
+                                                    className="login-input !pr-11"
+                                                    type={showPassword ? 'text' : 'password'}
+                                                    placeholder="••••••••"
+                                                    autoComplete="current-password"
+                                                    {...field}
+                                                    disabled={isSubmitting}
+                                                />
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setShowPassword((prev) => !prev)}
+                                                    disabled={isSubmitting}
+                                                    className="absolute top-1/2 right-3 -translate-y-1/2 text-[var(--muted-foreground)] hover:text-[var(--foreground)] disabled:opacity-50"
+                                                    aria-label={showPassword ? 'Hide password' : 'Show password'}
+                                                    tabIndex={-1}
+                                                >
+                                                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                                                </button>
+                                            </div>
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
