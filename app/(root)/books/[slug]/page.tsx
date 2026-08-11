@@ -6,7 +6,7 @@ import { ArrowLeft } from "lucide-react";
 import { auth } from "@/lib/auth";
 import { getBookBySlug } from "@/lib/actions/book.actions";
 import VapiControls from "@/components/VapiControls";
-import Navbar from "@/components/Navbar";
+import AppHeader from "@/components/AppHeader";
 
 export default async function BookDetailsPage({
   params,
@@ -29,11 +29,11 @@ export default async function BookDetailsPage({
   const book = result.data;
 
   return (
-    <div className="book-page-container">
-      <Navbar />
+    <div className="book-page-dark book-page-container">
+      <AppHeader />
 
       <Link href="/library" className="back-btn-floating">
-        <ArrowLeft className="size-6 text-[#212a3b]" />
+        <ArrowLeft className="size-6 text-[var(--foreground)]" />
       </Link>
 
       <VapiControls book={book} />

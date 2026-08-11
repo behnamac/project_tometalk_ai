@@ -89,3 +89,12 @@ export const formatDuration = (seconds: number): string => {
   const secs = seconds % 60;
   return `${mins}:${secs.toString().padStart(2, '0')}`;
 };
+
+// Derive up-to-2-letter initials from a display name (e.g. "John Doe" -> "JD")
+export const getInitials = (name?: string | null): string => {
+  if (!name) return '';
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  if (parts.length === 0) return '';
+  if (parts.length === 1) return parts[0][0].toUpperCase();
+  return (parts[0][0] + parts[1][0]).toUpperCase();
+};

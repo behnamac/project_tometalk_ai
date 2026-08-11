@@ -1,0 +1,13 @@
+{
+  "nav": {
+    "library": "Bibliothek",
+    "addNew": "Neu hinzufügen",
+    "signIn": "Anmelden",
+    "signOut": "Abmelden"
+  },
+  "language": {
+    "label": "Sprache",
+    "en": "English",
+    "de": "Deutsch"
+  }
+}

@@ -3,6 +3,7 @@ import { IBM_Plex_Serif, IBM_Plex_Sans, Mona_Sans, Space_Grotesk } from "next/fo
 
 import "./globals.css";
 import {Toaster} from "@/components/ui/sonner";
+import I18nProvider from "@/components/providers/I18nProvider";
 
 const ibmPlexSerif = IBM_Plex_Serif({
     variable: "--font-ibm-plex-serif",
@@ -48,7 +49,9 @@ export default function RootLayout({
         className={`${ibmPlexSerif.variable} ${monaSans.variable} ${spaceGrotesk.variable} ${ibmPlexSans.variable} relative font-sans antialiased`}
         suppressHydrationWarning
       >
-        {children}
+        <I18nProvider>
+          {children}
+        </I18nProvider>
         <Toaster />
       </body>
     </html>

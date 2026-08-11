@@ -3,23 +3,42 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { useTranslation } from "react-i18next";
 import { authClient } from "@/lib/auth-client";
-import { cn } from "@/lib/utils";
+import { cn, getInitials } from "@/lib/utils";
+import { LANGUAGE_STORAGE_KEY } from "@/lib/i18n";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuRadioGroup,
+    DropdownMenuRadioItem,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const navItems = [
-    { label: "Library", href: "/library" },
-    { label: "Add New", href: "/books/new" },
+    { labelKey: "nav.library", href: "/library" },
+    { labelKey: "nav.addNew", href: "/books/new" },
 ];
 
 const AppHeader = () => {
     const pathName = usePathname();
     const router = useRouter();
     const { data: session } = authClient.useSession();
+    const { t, i18n } = useTranslation();
 
     const handleSignOut = async () => {
         await authClient.signOut();
         router.push("/");
         router.refresh();
+    };
+
+    const handleLanguageChange = (value: string) => {
+        i18n.changeLanguage(value);
+        window.localStorage.setItem(LANGUAGE_STORAGE_KEY, value);
     };
 
     return (
@@ -31,35 +50,58 @@ const AppHeader = () => {
                 </Link>
 
                 <nav className="flex items-center gap-7">
-                    {navItems.map(({ label, href }) => {
+                    {navItems.map(({ labelKey, href }) => {
                         const isActive = pathName === href || (href !== "/" && pathName.startsWith(href));
 
                         return (
                             <Link
-                                key={label}
+                                key={href}
                                 href={href}
                                 className={cn(
                                     "app-header-nav-link",
                                     isActive ? "app-header-nav-link-active" : "app-header-nav-link-default"
                                 )}
                             >
-                                {label}
+                                {t(labelKey)}
                             </Link>
                         );
                     })}
 
                     {session?.user ? (
-                        <div className="flex items-center gap-4">
-                            <span className="app-header-nav-link app-header-nav-link-default">
-                                {session.user.name}
-                            </span>
-                            <button onClick={handleSignOut} className="app-header-nav-link app-header-nav-link-default cursor-pointer">
-                                Sign out
-                            </button>
-                        </div>
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <button className="app-header-avatar-btn" aria-label="Account menu">
+                                    <Avatar>
+                                        <AvatarFallback className="app-header-avatar-fallback">
+                                            {getInitials(session.user.name)}
+                                        </AvatarFallback>
+                                    </Avatar>
+                                </button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                                <DropdownMenuLabel>
+                                    <span className="block font-medium truncate">{session.user.name}</span>
+                                    <span className="block text-xs font-normal text-[var(--muted-foreground)] truncate">
+                                        {session.user.email}
+                                    </span>
+                                </DropdownMenuLabel>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuLabel className="text-xs text-[var(--muted-foreground)]">
+                                    {t("language.label")}
+                                </DropdownMenuLabel>
+                                <DropdownMenuRadioGroup value={i18n.language} onValueChange={handleLanguageChange}>
+                                    <DropdownMenuRadioItem value="en">{t("language.en")}</DropdownMenuRadioItem>
+                                    <DropdownMenuRadioItem value="de">{t("language.de")}</DropdownMenuRadioItem>
+                                </DropdownMenuRadioGroup>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem onClick={handleSignOut} className="cursor-pointer">
+                                    {t("nav.signOut")}
+                                </DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
                     ) : (
                         <Link href="/sign-in" className="app-header-nav-link app-header-nav-link-default">
-                            Sign in
+                            {t("nav.signIn")}
                         </Link>
                     )}
                 </nav>
