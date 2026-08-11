@@ -61,6 +61,28 @@ export const getBookBySlug = async (slug: string): Promise<ActionResult<IBook>> 
     }
 }
 
+export const removeBook = async (bookId: string): Promise<ActionResult<{ removed: boolean }>> => {
+    try {
+        const session = await auth.api.getSession({ headers: await headers() });
+        const userId = session?.user?.id;
+
+        if (!userId) {
+            return { success: false, error: 'You must be signed in to remove a book.' };
+        }
+
+        const removed = await bookService.deleteBookForUser(bookId, userId);
+
+        if (!removed) {
+            return { success: false, error: 'Book not found.' };
+        }
+
+        return { success: true, data: { removed } };
+    } catch (e) {
+        console.error('Error removing book', e);
+        return { success: false, error: (e as Error).message };
+    }
+}
+
 export const saveBookSegments = async (
     bookId: string,
     userId: string,

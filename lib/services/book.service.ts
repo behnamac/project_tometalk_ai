@@ -86,6 +86,18 @@ export async function findBookBySlugForUser(slug: string, userId: string): Promi
     return prisma.book.findFirst({ where: { slug, userId } });
 }
 
+// Scopes the delete to id + userId at the DB level so ownership is enforced
+// atomically and existence of another user's book is never leaked.
+export async function deleteBookForUser(bookId: string, userId: string): Promise<boolean> {
+    const result = await prisma.book.deleteMany({ where: { id: bookId, userId } });
+
+    if (result.count > 0) {
+        revalidatePath("/library");
+    }
+
+    return result.count > 0;
+}
+
 export async function saveSegmentsForBook(
     bookId: string,
     userId: string,
