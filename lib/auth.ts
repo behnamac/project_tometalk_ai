@@ -1,5 +1,6 @@
 import { betterAuth } from 'better-auth';
 import { nextCookies } from 'better-auth/next-js';
+import { admin } from 'better-auth/plugins';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
 import { stripe } from '@better-auth/stripe';
 import Stripe from 'stripe';
@@ -22,6 +23,7 @@ function buildAuth() {
             enabled: true,
         },
         plugins: [
+            admin(),
             stripe({
                 stripeClient,
                 stripeWebhookSecret: process.env.STRIPE_WEBHOOK_SECRET!,
