@@ -18,7 +18,6 @@ const monaSans = Mona_Sans({
     display: 'swap'
 })
 
-// Landing page only (Geometric design identity) — scoped via .landing-dark in globals.css
 const spaceGrotesk = Space_Grotesk({
     variable: '--font-space-grotesk',
     subsets: ['latin'],
