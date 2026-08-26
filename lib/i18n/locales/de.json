@@ -4,7 +4,8 @@
     "addNew": "Neu hinzufügen",
     "signIn": "Anmelden",
     "signOut": "Abmelden",
-    "startConversation": "Gespräch starten"
+    "startConversation": "Gespräch starten",
+    "adminUsers": "Benutzer verwalten"
   },
   "language": {
     "label": "Sprache",
@@ -201,5 +202,60 @@
     "signInRequired": "Bitte melde dich an, um eine Sprachsitzung zu starten.",
     "limitReached": "Sitzungslimit erreicht. Bitte aktualisiere deinen Tarif.",
     "startFailed": "Sprachsitzung konnte nicht gestartet werden. Bitte versuche es erneut."
+  },
+  "admin": {
+    "users": {
+      "title": "Benutzer",
+      "searchPlaceholder": "Benutzer nach E-Mail suchen",
+      "columns": {
+        "name": "Name",
+        "email": "E-Mail",
+        "role": "Rolle",
+        "created": "Beigetreten",
+        "actions": "Aktionen"
+      },
+      "role": {
+        "admin": "Admin",
+        "user": "Benutzer"
+      },
+      "you": "Du",
+      "actions": {
+        "promote": "Zum Admin machen",
+        "demote": "Admin entfernen",
+        "remove": "Benutzer löschen"
+      },
+      "confirmRemove": "{{email}} löschen? Dadurch werden der Benutzer und alle seine Bücher, Segmente und Sprachsitzungen dauerhaft entfernt.",
+      "confirmPromote": "{{email}} Admin-Zugriff geben?",
+      "confirmDemote": "{{email}} den Admin-Zugriff entziehen?",
+      "empty": "Keine Benutzer gefunden.",
+      "pagination": {
+        "prev": "Zurück",
+        "next": "Weiter",
+        "status": "Seite {{page}} — {{total}} Benutzer"
+      },
+      "toasts": {
+        "removed": "Benutzer gelöscht.",
+        "promoted": "Benutzer ist jetzt Admin.",
+        "demoted": "Admin-Zugriff entfernt.",
+        "created": "Benutzer erstellt.",
+        "removeFailed": "Benutzer konnte nicht gelöscht werden.",
+        "roleFailed": "Rolle konnte nicht geändert werden.",
+        "createFailed": "Benutzer konnte nicht erstellt werden."
+      },
+      "form": {
+        "title": "Benutzer hinzufügen",
+        "nameLabel": "Name",
+        "namePlaceholder": "Jane Doe",
+        "emailLabel": "E-Mail",
+        "emailPlaceholder": "jane@example.com",
+        "passwordLabel": "Temporäres Passwort",
+        "passwordPlaceholder": "Mindestens 8 Zeichen",
+        "roleLabel": "Rolle",
+        "roleUser": "Benutzer",
+        "roleAdmin": "Admin",
+        "submit": "Benutzer erstellen",
+        "submitting": "Wird erstellt…"
+      }
+    }
   }
 }

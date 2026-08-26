@@ -279,6 +279,33 @@
   min-height: 100vh;
 }
 
+/* Fixed dark editorial theme for the admin users page, independent of global theme state */
+.admin-dark {
+  --background: #1a1918;
+  --foreground: #f7f4ee;
+  --card: #211f1d;
+  --card-foreground: #f7f4ee;
+  --popover: #211f1d;
+  --popover-foreground: #f7f4ee;
+  --secondary: #2d2a26;
+  --secondary-foreground: #f7f4ee;
+  --accent: #2d2a26;
+  --accent-foreground: #f7f4ee;
+  --muted-foreground: #8a847a;
+  --border: rgba(247, 244, 238, 0.1);
+  --input: rgba(247, 244, 238, 0.15);
+  --ring: #c8553d;
+  --blue: #c8553d;
+
+  --font-serif: var(--font-space-grotesk);
+  --font-sans: var(--font-ibm-plex-sans);
+  font-family: var(--font-ibm-plex-sans);
+
+  background: var(--background);
+  color: var(--foreground);
+  min-height: 100vh;
+}
+
 /* Fixed dark editorial theme for the book detail / voice-session page, independent of global theme state */
 .book-page-dark {
   --background: #1a1918;
@@ -1033,6 +1060,58 @@
   }
   .library-empty-card {
     @apply bg-[var(--card)] rounded-[14px] p-12 max-w-md mx-auto text-center text-[var(--muted-foreground)];
+  }
+
+  /* ===========================================
+     ADMIN USERS PAGE (dark editorial redesign)
+     =========================================== */
+  .admin-table-wrap {
+    @apply w-full overflow-x-auto rounded-[14px] border border-[var(--border)] bg-[var(--card)];
+  }
+  .admin-table {
+    @apply w-full border-collapse text-sm text-[var(--foreground)];
+  }
+  .admin-table th {
+    @apply text-left font-medium text-[var(--muted-foreground)] px-4 py-3 border-b border-[var(--border)] whitespace-nowrap;
+  }
+  .admin-table td {
+    @apply px-4 py-3 border-b border-[var(--border)] align-middle;
+  }
+  .admin-table tr:last-child td {
+    @apply border-b-0;
+  }
+  .admin-name-cell {
+    @apply flex items-center gap-2;
+  }
+  .admin-you-chip {
+    @apply inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide border border-[var(--border)] text-[var(--muted-foreground)];
+  }
+  .admin-role-badge {
+    @apply inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold border border-[var(--border)] text-[var(--muted-foreground)];
+  }
+  .admin-role-badge-admin {
+    @apply bg-[var(--ring)] text-white border-transparent;
+  }
+  .admin-actions {
+    @apply flex items-center gap-2 flex-wrap;
+  }
+  .admin-add-form {
+    @apply mb-10 grid gap-3 sm:grid-cols-[1fr_1fr_1fr_auto] items-end bg-[var(--card)] border border-[var(--border)] rounded-[14px] p-4;
+  }
+  .admin-add-form-title {
+    @apply sm:col-span-full font-serif font-semibold text-lg text-[var(--foreground)];
+  }
+  .admin-field {
+    @apply flex flex-col gap-1.5;
+  }
+  .admin-field-label {
+    @apply text-xs font-medium text-[var(--muted-foreground)];
+  }
+  .admin-select {
+    @apply h-9 rounded-md border border-[var(--input)] bg-transparent px-3 text-sm text-[var(--foreground)] outline-none focus-visible:ring-1 focus-visible:ring-[var(--ring)];
+  }
+  .admin-pagination {
+    @apply flex items-center justify-between gap-3 mt-5 text-sm text-[var(--muted-foreground)];
   }
 
   /* ===========================================

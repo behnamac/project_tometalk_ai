@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 import { Control, FieldPath, FieldValues } from 'react-hook-form';
 import { LucideIcon } from 'lucide-react';
 import z from 'zod';
-import { UploadSchema, SignInSchema, SignUpSchema } from '@/lib/zod';
+import { UploadSchema, SignInSchema, SignUpSchema, AdminCreateUserSchema } from '@/lib/zod';
 import type { Book, BookSegment, VoiceSession } from '@/lib/generated/prisma/client';
 
 // ============================================
@@ -28,6 +28,7 @@ export type IVoiceSession = VoiceSession;
 export type BookUploadFormValues = z.infer<typeof UploadSchema>;
 export type SignInFormValues = z.infer<typeof SignInSchema>;
 export type SignUpFormValues = z.infer<typeof SignUpSchema>;
+export type AdminCreateUserInput = z.infer<typeof AdminCreateUserSchema>;
 
 export interface CreateBook {
     userId: string;

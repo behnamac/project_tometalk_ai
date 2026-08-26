@@ -4,7 +4,8 @@
     "addNew": "Add New",
     "signIn": "Sign in",
     "signOut": "Sign out",
-    "startConversation": "Start a conversation"
+    "startConversation": "Start a conversation",
+    "adminUsers": "Manage users"
   },
   "language": {
     "label": "Language",
@@ -201,5 +202,60 @@
     "signInRequired": "Please sign in to start a voice session.",
     "limitReached": "Session limit reached. Please upgrade your plan.",
     "startFailed": "Failed to start voice session. Please try again."
+  },
+  "admin": {
+    "users": {
+      "title": "Users",
+      "searchPlaceholder": "Search users by email",
+      "columns": {
+        "name": "Name",
+        "email": "Email",
+        "role": "Role",
+        "created": "Joined",
+        "actions": "Actions"
+      },
+      "role": {
+        "admin": "Admin",
+        "user": "User"
+      },
+      "you": "You",
+      "actions": {
+        "promote": "Make admin",
+        "demote": "Remove admin",
+        "remove": "Delete user"
+      },
+      "confirmRemove": "Delete {{email}}? This permanently removes the user and all of their books, segments, and voice sessions.",
+      "confirmPromote": "Give {{email}} admin access?",
+      "confirmDemote": "Remove admin access from {{email}}?",
+      "empty": "No users found.",
+      "pagination": {
+        "prev": "Previous",
+        "next": "Next",
+        "status": "Page {{page}} — {{total}} users"
+      },
+      "toasts": {
+        "removed": "User deleted.",
+        "promoted": "User is now an admin.",
+        "demoted": "Admin access removed.",
+        "created": "User created.",
+        "removeFailed": "Failed to delete user.",
+        "roleFailed": "Failed to change role.",
+        "createFailed": "Failed to create user."
+      },
+      "form": {
+        "title": "Add a user",
+        "nameLabel": "Name",
+        "namePlaceholder": "Jane Doe",
+        "emailLabel": "Email",
+        "emailPlaceholder": "jane@example.com",
+        "passwordLabel": "Temporary password",
+        "passwordPlaceholder": "At least 8 characters",
+        "roleLabel": "Role",
+        "roleUser": "User",
+        "roleAdmin": "Admin",
+        "submit": "Create user",
+        "submitting": "Creating…"
+      }
+    }
   }
 }

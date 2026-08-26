@@ -6,7 +6,7 @@ import { useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { authClient } from "@/lib/auth-client";
-import { cn, getInitials } from "@/lib/utils";
+import { cn, getInitials, isAdminRole } from "@/lib/utils";
 import { useLanguage } from "@/lib/i18n/useLanguage";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
@@ -110,6 +110,14 @@ const AppHeader = () => {
                                     </div>
                                 </DropdownMenuLabel>
                                 <DropdownMenuSeparator />
+                                {isAdminRole((session.user as { role?: string | null }).role) && (
+                                    <>
+                                        <DropdownMenuItem asChild className="cursor-pointer">
+                                            <Link href="/admin/users">{t("nav.adminUsers")}</Link>
+                                        </DropdownMenuItem>
+                                        <DropdownMenuSeparator />
+                                    </>
+                                )}
                                 <DropdownMenuItem onClick={handleSignOut} className="cursor-pointer">
                                     {t("nav.signOut")}
                                 </DropdownMenuItem>

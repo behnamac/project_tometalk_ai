@@ -82,6 +82,10 @@ export const formatDuration = (seconds: number): string => {
   return `${mins}:${secs.toString().padStart(2, '0')}`;
 };
 
+// better-auth stores one or more roles as a comma-separated string
+export const isAdminRole = (role?: string | null): boolean =>
+  !!role && role.split(',').map((r) => r.trim()).includes('admin');
+
 // Derive up-to-2-letter initials from a display name (e.g. "John Doe" -> "JD")
 export const getInitials = (name?: string | null): string => {
   if (!name) return '';
