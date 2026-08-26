@@ -29,14 +29,16 @@ export default async function BookDetailsPage({
   const book = result.data;
 
   return (
-    <div className="book-page-dark book-page-container">
+    <div className="book-page-dark">
       <AppHeader />
 
       <Link href="/library" className="back-btn-floating">
         <ArrowLeft className="size-6 text-[var(--foreground)]" />
       </Link>
 
-      <VapiControls book={book} />
+      <main className="book-page-container">
+        <VapiControls book={book} />
+      </main>
     </div>
   );
 }
