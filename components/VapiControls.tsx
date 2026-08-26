@@ -6,6 +6,7 @@ import {IBook} from "@/types";
 import Image from "next/image";
 import Transcript from "@/components/Transcript";
 import {toast} from "sonner";
+import {useTranslation} from "react-i18next";
 import {formatDuration} from "@/lib/utils";
 
 import {useRouter} from "next/navigation";
@@ -13,6 +14,7 @@ import {useEffect} from "react";
 
 const VapiControls = ({ book }: { book: IBook }) => {
     const { status, isActive, messages, currentMessage, currentUserMessage, duration, start, stop, clearError, limitError, isBillingError, maxDurationSeconds } = useVapi(book)
+    const { t } = useTranslation();
     const router = useRouter();
 
     useEffect(() => {
@@ -27,12 +29,12 @@ const VapiControls = ({ book }: { book: IBook }) => {
 
     const getStatusDisplay = () => {
         switch (status) {
-            case 'connecting': return { label: 'Connecting...', color: 'vapi-status-dot-connecting' };
-            case 'starting': return { label: 'Starting...', color: 'vapi-status-dot-starting' };
-            case 'listening': return { label: 'Listening', color: 'vapi-status-dot-listening' };
-            case 'thinking': return { label: 'Thinking...', color: 'vapi-status-dot-thinking' };
-            case 'speaking': return { label: 'Speaking', color: 'vapi-status-dot-speaking' };
-            default: return { label: 'Ready', color: 'vapi-status-dot-ready' };
+            case 'connecting': return { label: t('book.status.connecting'), color: 'vapi-status-dot-connecting' };
+            case 'starting': return { label: t('book.status.starting'), color: 'vapi-status-dot-starting' };
+            case 'listening': return { label: t('book.status.listening'), color: 'vapi-status-dot-listening' };
+            case 'thinking': return { label: t('book.status.thinking'), color: 'vapi-status-dot-thinking' };
+            case 'speaking': return { label: t('book.status.speaking'), color: 'vapi-status-dot-speaking' };
+            default: return { label: t('book.status.ready'), color: 'vapi-status-dot-ready' };
         }
     };
 
@@ -59,6 +61,7 @@ const VapiControls = ({ book }: { book: IBook }) => {
                             <button
                                 onClick={isActive ? stop : start}
                                 disabled={status === 'connecting'}
+                                aria-label={isActive ? t('book.stopCall') : t('book.startCall')}
                                 className={`vapi-mic-btn shadow-md !w-[60px] !h-[60px] z-10 ${isActive ? 'vapi-mic-btn-active' : 'vapi-mic-btn-inactive'}`}
                             >
                                 {isActive ? (
@@ -75,7 +78,7 @@ const VapiControls = ({ book }: { book: IBook }) => {
                             <h1 className="text-2xl sm:text-3xl font-bold font-serif text-[var(--foreground)] mb-1">
                                 {book.title}
                             </h1>
-                            <p className="text-[var(--muted-foreground)] font-medium">by {book.author}</p>
+                            <p className="text-[var(--muted-foreground)] font-medium">{t('book.by', { author: book.author })}</p>
                         </div>
 
                         <div className="flex flex-wrap gap-3">
@@ -85,7 +88,7 @@ const VapiControls = ({ book }: { book: IBook }) => {
                             </div>
 
                             <div className="vapi-status-indicator">
-                                <span className="vapi-status-text">Voice: {book.persona || "Daniel"}</span>
+                                <span className="vapi-status-text">{t('book.voiceLabel', { name: book.persona || "Daniel" })}</span>
                             </div>
 
                             <div className="vapi-status-indicator">

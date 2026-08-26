@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { authClient } from '@/lib/auth-client';
 
 import { useSubscription } from '@/hooks/useSubscription';
@@ -15,6 +16,7 @@ import { startVoiceSession, endVoiceSession } from '@/lib/actions/session.action
 export type CallStatus = 'idle' | 'connecting' | 'starting' | 'listening' | 'thinking' | 'speaking';
 
 export function useVapi(book: IBook) {
+    const { t } = useTranslation();
     const { data: session } = authClient.useSession();
     const userId = session?.user?.id;
     const { limits } = useSubscription();
@@ -158,7 +160,7 @@ export function useVapi(book: IBook) {
 
     const start = useCallback(async () => {
         if (!userId) {
-            setLimitError('Please sign in to start a voice session.');
+            setLimitError(t('vapi.signInRequired'));
             return;
         }
 
@@ -171,7 +173,7 @@ export function useVapi(book: IBook) {
             const result = await startVoiceSession(book.id);
 
             if (!result.success) {
-                setLimitError(result.error || 'Session limit reached. Please upgrade your plan.');
+                setLimitError(result.error || t('vapi.limitReached'));
                 setIsBillingError(!!result.isBillingError);
                 setStatus('idle');
                 return;
@@ -203,9 +205,9 @@ export function useVapi(book: IBook) {
         } catch (err) {
             console.error('Failed to start call:', err);
             setStatus('idle');
-            setLimitError('Failed to start voice session. Please try again.');
+            setLimitError(t('vapi.startFailed'));
         }
-    }, [book.id, book.title, book.author, voice, userId]);
+    }, [book.id, book.title, book.author, voice, userId, t]);
 
     const stop = useCallback(() => {
         isStoppingRef.current = true;

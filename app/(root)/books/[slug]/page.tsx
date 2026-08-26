@@ -7,6 +7,7 @@ import { auth } from "@/lib/auth";
 import { getBookBySlug } from "@/lib/actions/book.actions";
 import VapiControls from "@/components/VapiControls";
 import AppHeader from "@/components/AppHeader";
+import { getServerTranslation } from "@/lib/i18n/server";
 
 export default async function BookDetailsPage({
   params,
@@ -14,6 +15,7 @@ export default async function BookDetailsPage({
   params: Promise<{ slug: string }>;
 }) {
   const session = await auth.api.getSession({ headers: await headers() });
+  const { t } = await getServerTranslation();
 
   if (!session?.user) {
     redirect("/sign-in");
@@ -32,7 +34,7 @@ export default async function BookDetailsPage({
     <div className="book-page-dark">
       <AppHeader />
 
-      <Link href="/library" className="back-btn-floating">
+      <Link href="/library" className="back-btn-floating" aria-label={t("book.backToLibrary")}>
         <ArrowLeft className="size-6 text-[var(--foreground)]" />
       </Link>
 

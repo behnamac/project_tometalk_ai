@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import { Mic } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { Messages } from '@/types';
 
 interface TranscriptProps {
@@ -11,6 +12,7 @@ interface TranscriptProps {
 }
 
 const Transcript = ({ messages, currentMessage, currentUserMessage }: TranscriptProps) => {
+  const { t } = useTranslation();
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -32,9 +34,9 @@ const Transcript = ({ messages, currentMessage, currentUserMessage }: Transcript
     return (
       <div className="transcript-empty">
         <Mic className="size-12 text-[var(--muted-foreground)] mb-4" />
-        <h2 className="transcript-empty-text"><b>No conversation yet</b></h2>
+        <h2 className="transcript-empty-text"><b>{t('book.transcriptEmptyTitle')}</b></h2>
         <p className="transcript-empty-hint">
-          Click the mic button above to start talking
+          {t('book.transcriptEmptyHint')}
         </p>
       </div>
     );

@@ -1,6 +1,5 @@
 import { cookies } from "next/headers";
 import { createInstance, type i18n as I18nInstance } from "i18next";
-import { initReactI18next } from "react-i18next";
 
 import {
     DEFAULT_LANGUAGE,
@@ -18,7 +17,7 @@ export async function getRequestLanguage(): Promise<SupportedLanguage> {
 
 async function createServerInstance(language: SupportedLanguage): Promise<I18nInstance> {
     const instance = createInstance();
-    await instance.use(initReactI18next).init({
+    await instance.init({
         resources,
         lng: language,
         fallbackLng: DEFAULT_LANGUAGE,
