@@ -31,7 +31,7 @@ const LandingNavigation = () => {
         >
             <div className="wrapper flex items-center justify-between py-5">
                 <Link href="/" className="flex items-center gap-2">
-                    <Image src="/assets/logo.png" alt="TomeTalk" width={36} height={22} />
+                    <Image src="/assets/icon.png" alt="TomeTalk" width={26} height={26} className="rounded-[7px] object-contain" />
                     <span className="font-serif text-lg font-semibold text-foreground">TomeTalk</span>
                 </Link>
 

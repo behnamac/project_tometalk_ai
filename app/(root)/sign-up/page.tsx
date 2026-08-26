@@ -28,7 +28,7 @@ const SignUpPage = async () => {
 
             <div className="login-form-panel">
                 <div className="login-card">
-                    <Image src="/assets/logo.png" alt="TomeTalk" width={32} height={32} className="login-logo" />
+                    <Image src="/assets/icon.png" alt="TomeTalk" width={32} height={32} className="login-logo object-contain" />
                     <h1 className="login-title">{t('signUp.title')}</h1>
                     <p className="login-subtitle">{t('signUp.subtitle')}</p>
 
