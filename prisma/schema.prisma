@@ -16,7 +16,7 @@ model Book {
   id            String         @id @default(cuid())
   userId        String
   title         String
-  slug          String         @unique
+  slug          String
   author        String
   persona       String?
   fileURL       String
@@ -30,6 +30,7 @@ model Book {
   segments      BookSegment[]
   voiceSessions VoiceSession[]
 
+  @@unique([userId, slug])
   @@index([userId])
 }
 

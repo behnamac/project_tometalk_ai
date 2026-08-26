@@ -8,7 +8,14 @@ import * as bookService from "@/lib/services/book.service";
 
 export const getAllBooks = async (search?: string): Promise<ActionResult<IBook[]>> => {
     try {
-        const books = await bookService.listBooks(search);
+        const session = await auth.api.getSession({ headers: await headers() });
+        const userId = session?.user?.id;
+
+        if (!userId) {
+            return { success: false, error: 'You must be signed in to view your library.' };
+        }
+
+        const books = await bookService.listBooks(userId, search);
         return { success: true, data: books };
     } catch (e) {
         console.error('Error fetching books', e);
@@ -18,7 +25,14 @@ export const getAllBooks = async (search?: string): Promise<ActionResult<IBook[]
 
 export const checkBookExists = async (title: string): Promise<ActionResult<{ exists: boolean; book?: IBook }>> => {
     try {
-        const book = await bookService.findBookByTitle(title);
+        const session = await auth.api.getSession({ headers: await headers() });
+        const userId = session?.user?.id;
+
+        if (!userId) {
+            return { success: false, error: 'You must be signed in to add a book.' };
+        }
+
+        const book = await bookService.findBookByTitleForUser(title, userId);
         return { success: true, data: book ? { exists: true, book } : { exists: false } };
     } catch (e) {
         console.error('Error checking book exists', e);

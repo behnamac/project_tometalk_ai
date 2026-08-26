@@ -30,23 +30,26 @@ export interface BookSegmentResult {
     wordCount: number;
 }
 
-export async function listBooks(search?: string): Promise<IBook[]> {
+export async function listBooks(userId: string, search?: string): Promise<IBook[]> {
     return prisma.book.findMany({
-        where: search
-            ? {
-                  OR: [
-                      { title: { contains: search, mode: "insensitive" } },
-                      { author: { contains: search, mode: "insensitive" } },
-                  ],
-              }
-            : undefined,
+        where: {
+            userId,
+            ...(search
+                ? {
+                      OR: [
+                          { title: { contains: search, mode: "insensitive" } },
+                          { author: { contains: search, mode: "insensitive" } },
+                      ],
+                  }
+                : {}),
+        },
         orderBy: { createdAt: "desc" },
     });
 }
 
-export async function findBookByTitle(title: string): Promise<IBook | null> {
+export async function findBookByTitleForUser(title: string, userId: string): Promise<IBook | null> {
     const slug = generateSlug(title);
-    return prisma.book.findUnique({ where: { slug } });
+    return prisma.book.findUnique({ where: { userId_slug: { userId, slug } } });
 }
 
 export async function createBookForUser(data: CreateBook): Promise<CreateBookOutcome> {
@@ -58,7 +61,7 @@ export async function createBookForUser(data: CreateBook): Promise<CreateBookOut
     }
 
     const slug = generateSlug(data.title);
-    const existingBook = await prisma.book.findUnique({ where: { slug } });
+    const existingBook = await prisma.book.findUnique({ where: { userId_slug: { userId, slug } } });
 
     if (existingBook) {
         return { book: existingBook, alreadyExists: true };
