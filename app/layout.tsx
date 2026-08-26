@@ -4,6 +4,7 @@ import { IBM_Plex_Serif, IBM_Plex_Sans, Mona_Sans, Space_Grotesk } from "next/fo
 import "./globals.css";
 import {Toaster} from "@/components/ui/sonner";
 import I18nProvider from "@/components/providers/I18nProvider";
+import { getRequestLanguage } from "@/lib/i18n/server";
 
 const ibmPlexSerif = IBM_Plex_Serif({
     variable: "--font-ibm-plex-serif",
@@ -37,18 +38,20 @@ export const metadata: Metadata = {
   description: "Transform your books into interactive AI conversations. Upload PDFs, and chat with your books using voice.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const language = await getRequestLanguage();
+
   return (
-    <html lang="en">
+    <html lang={language}>
       <body
         className={`${ibmPlexSerif.variable} ${monaSans.variable} ${spaceGrotesk.variable} ${ibmPlexSans.variable} relative font-sans antialiased`}
         suppressHydrationWarning
       >
-        <I18nProvider>
+        <I18nProvider language={language}>
           {children}
         </I18nProvider>
         <Toaster />

@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
+import { useTranslation } from 'react-i18next';
 import { upload } from '@vercel/blob/client';
 
 import { authClient } from '@/lib/auth-client';
@@ -42,11 +43,12 @@ async function uploadCoverImage(
 export function useBookUpload() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const { data: session } = authClient.useSession();
+    const { t } = useTranslation();
     const userId = session?.user?.id;
     const router = useRouter();
 
     const goToExistingBook = (slug: string) => {
-        toast.info('Book with same title already exists.');
+        toast.info(t('upload.toasts.bookExists'));
         router.push(`/books/${slug}`);
     };
 
@@ -72,7 +74,7 @@ export function useBookUpload() {
             const parsedPDF = await parsePDFFile(pdfFile);
 
             if (parsedPDF.content.length === 0) {
-                toast.error('Failed to parse PDF. Please try again with a different file.');
+                toast.error(t('upload.toasts.parseFailed'));
                 return false;
             }
 
@@ -96,7 +98,7 @@ export function useBookUpload() {
             });
 
             if (!createResult.success || !createResult.data) {
-                toast.error(createResult.error || 'Failed to create book');
+                toast.error(createResult.error || t('upload.toasts.createFailed'));
                 return false;
             }
 
@@ -110,7 +112,7 @@ export function useBookUpload() {
             const segments = await saveBookSegments(book.id, userId, parsedPDF.content);
 
             if (!segments.success) {
-                toast.error('Failed to save book segments');
+                toast.error(t('upload.toasts.segmentsFailed'));
                 return false;
             }
 
@@ -118,7 +120,7 @@ export function useBookUpload() {
             return true;
         } catch (error) {
             console.error(error);
-            toast.error('Failed to upload book. Please try again later.');
+            toast.error(t('upload.toasts.uploadFailed'));
             return false;
         } finally {
             setIsSubmitting(false);

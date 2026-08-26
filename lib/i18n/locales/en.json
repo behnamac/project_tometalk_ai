@@ -3,11 +3,203 @@
     "library": "Library",
     "addNew": "Add New",
     "signIn": "Sign in",
-    "signOut": "Sign out"
+    "signOut": "Sign out",
+    "startConversation": "Start a conversation"
   },
   "language": {
     "label": "Language",
     "en": "English",
     "de": "Deutsch"
+  },
+  "landing": {
+    "hero": {
+      "eyebrow": "TomeTalk",
+      "headline": "Talk to your documents.",
+      "subheadline": "Upload a PDF, book, report, or document. Let AI understand it, then ask anything about it.",
+      "primaryCta": "Start a conversation"
+    },
+    "reading": {
+      "headline": "Your document becomes understandable.",
+      "subheadline": "TomeTalk reads the content, understands the context, and connects information across the entire document."
+    },
+    "knowledge": {
+      "headline": "Not just search. Understanding.",
+      "subheadline": "Questions are answered using the meaning and context of your own content.",
+      "diagramAlt": "Diagram of connected knowledge topics extracted from a document",
+      "topics": {
+        "methodology": "Methodology",
+        "keyFindings": "Key findings",
+        "limitations": "Limitations",
+        "relatedWork": "Related work",
+        "conclusions": "Conclusions",
+        "definitions": "Definitions"
+      }
+    },
+    "conversation": {
+      "headline": "Ask. Understand. Explore.",
+      "userQuestion": "What are the main conclusions of this document?",
+      "assistantIntro": "The document identifies three main conclusions:",
+      "points": {
+        "one": "The proposed method outperforms the baseline by a wide margin.",
+        "two": "Results hold consistently across every tested dataset.",
+        "three": "Further work is needed on edge cases with sparse data."
+      },
+      "citation": "p. 24, Conclusions",
+      "sourceLabel": "Source"
+    },
+    "useCases": {
+      "heading": "Built for how you already read.",
+      "items": {
+        "study": {
+          "title": "Study",
+          "description": "Turn books and lecture notes into your personal study assistant.",
+          "example": "“Summarize chapter 4 in simple terms.”"
+        },
+        "research": {
+          "title": "Research",
+          "description": "Explore long papers without reading every page again.",
+          "example": "“What methodology did the authors use?”"
+        },
+        "work": {
+          "title": "Work",
+          "description": "Ask questions across reports, documentation, and internal knowledge.",
+          "example": "“What changed between these two versions?”"
+        },
+        "understand": {
+          "title": "Understand",
+          "description": "Break down complicated documents into clear explanations.",
+          "example": "“Explain this clause like I’m new to it.”"
+        }
+      }
+    },
+    "capabilities": {
+      "heading": "Everything you need to get answers.",
+      "items": {
+        "upload": {
+          "title": "Upload anything worth understanding",
+          "description": "PDFs, books, reports, manuals, research papers, and more."
+        },
+        "contextual": {
+          "title": "Ask contextual questions",
+          "description": "Get answers grounded in the exact content you uploaded."
+        },
+        "summarize": {
+          "title": "Summarize long content",
+          "description": "From hundreds of pages to one simple conversation."
+        },
+        "find": {
+          "title": "Find specific information",
+          "description": "Find answers without searching page by page."
+        },
+        "explore": {
+          "title": "Explore ideas across a document",
+          "description": "Follow a thread of reasoning wherever it leads."
+        }
+      }
+    },
+    "finalCta": {
+      "headline": "Your documents have answers.",
+      "subheadline": "Start asking.",
+      "primaryCta": "Talk to your documents"
+    }
+  },
+  "library": {
+    "title": "Your Library",
+    "empty": "No books yet. Add your first book to get started.",
+    "searchPlaceholder": "Search books by title or author"
+  },
+  "bookCard": {
+    "removeAria": "Remove {{title}} from library",
+    "confirmRemove": "Remove \"{{title}}\" from your library?",
+    "removeFailed": "Failed to remove book"
+  },
+  "upload": {
+    "pageTitle": "Add a New Book",
+    "pageSubtitle": "Upload a PDF to generate your interactive reading experience",
+    "steps": {
+      "upload": "Upload",
+      "details": "Details",
+      "voice": "Voice"
+    },
+    "pdfLabel": "Book PDF File",
+    "pdfPlaceholder": "Click to upload PDF",
+    "pdfHint": "PDF file (max 50MB)",
+    "coverLabel": "Cover Image (Optional)",
+    "coverPlaceholder": "Click to upload cover image",
+    "coverHint": "Leave empty to auto-generate from PDF",
+    "titleLabel": "Title",
+    "titlePlaceholder": "ex: Rich Dad Poor Dad",
+    "authorLabel": "Author Name",
+    "authorPlaceholder": "ex: Robert Kiyosaki",
+    "continue": "Continue",
+    "back": "Back",
+    "beginSynthesis": "Begin Synthesis",
+    "remove": "Remove",
+    "toasts": {
+      "bookExists": "Book with same title already exists.",
+      "parseFailed": "Failed to parse PDF. Please try again with a different file.",
+      "createFailed": "Failed to create book",
+      "segmentsFailed": "Failed to save book segments",
+      "uploadFailed": "Failed to upload book. Please try again later."
+    }
+  },
+  "loading": {
+    "title": "Synthesizing Your Book",
+    "description": "Please wait while we process your PDF and prepare your interactive literary experience."
+  },
+  "voice": {
+    "male": "Male Voices",
+    "female": "Female Voices",
+    "descriptions": {
+      "dave": "Young male, British-Essex, casual & conversational",
+      "daniel": "Middle-aged male, British, authoritative but warm",
+      "chris": "Male, casual & easy-going",
+      "rachel": "Young female, American, calm & clear",
+      "sarah": "Young female, American, soft & approachable"
+    }
+  },
+  "signIn": {
+    "title": "Welcome back",
+    "subtitleDefault": "Sign in to continue your book conversations.",
+    "subtitleUpload": "Please login to upload books.",
+    "emailLabel": "Email",
+    "emailPlaceholder": "you@example.com",
+    "passwordLabel": "Password",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "submit": "Sign In",
+    "submitting": "Signing in...",
+    "failed": "Failed to sign in",
+    "footer": "Don't have an account?",
+    "signUpLink": "Sign up"
+  },
+  "signUp": {
+    "title": "Access by request",
+    "subtitle": "Bookified is currently in private testing. If you'd like to try it out, send me a quick email and I'll get you set up.",
+    "emailCta": "Email me to get access",
+    "footer": "Already have an account?",
+    "signInLink": "Sign in"
+  },
+  "book": {
+    "by": "by {{author}}",
+    "voiceLabel": "Voice: {{name}}",
+    "status": {
+      "connecting": "Connecting...",
+      "starting": "Starting...",
+      "listening": "Listening",
+      "thinking": "Thinking...",
+      "speaking": "Speaking",
+      "ready": "Ready"
+    },
+    "backToLibrary": "Back to library",
+    "transcriptEmptyTitle": "No conversation yet",
+    "transcriptEmptyHint": "Click the mic button above to start talking",
+    "startCall": "Start voice session",
+    "stopCall": "Stop voice session"
+  },
+  "vapi": {
+    "signInRequired": "Please sign in to start a voice session.",
+    "limitReached": "Session limit reached. Please upgrade your plan.",
+    "startFailed": "Failed to start voice session. Please try again."
   }
 }

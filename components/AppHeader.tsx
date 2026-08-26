@@ -7,7 +7,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { authClient } from "@/lib/auth-client";
 import { cn, getInitials } from "@/lib/utils";
-import { LANGUAGE_STORAGE_KEY } from "@/lib/i18n";
+import { useLanguage } from "@/lib/i18n/useLanguage";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
     DropdownMenu,
@@ -27,7 +27,8 @@ const AppHeader = () => {
     const pathName = usePathname();
     const router = useRouter();
     const { data: session } = authClient.useSession();
-    const { t, i18n } = useTranslation();
+    const { t } = useTranslation();
+    const { language, setLanguage } = useLanguage();
     const [headerEl, setHeaderEl] = useState<HTMLElement | null>(null);
 
     const handleSignOut = async () => {
@@ -37,8 +38,7 @@ const AppHeader = () => {
     };
 
     const handleLanguageChange = (value: string) => {
-        i18n.changeLanguage(value);
-        window.localStorage.setItem(LANGUAGE_STORAGE_KEY, value);
+        setLanguage(value);
     };
 
     return (
@@ -92,7 +92,7 @@ const AppHeader = () => {
                                             onClick={() => handleLanguageChange("en")}
                                             className={cn(
                                                 "app-header-lang-switch-btn",
-                                                i18n.language === "en" && "app-header-lang-switch-btn-active"
+                                                language === "en" && "app-header-lang-switch-btn-active"
                                             )}
                                         >
                                             {t("language.en")}
@@ -102,7 +102,7 @@ const AppHeader = () => {
                                             onClick={() => handleLanguageChange("de")}
                                             className={cn(
                                                 "app-header-lang-switch-btn",
-                                                i18n.language === "de" && "app-header-lang-switch-btn-active"
+                                                language === "de" && "app-header-lang-switch-btn-active"
                                             )}
                                         >
                                             {t("language.de")}

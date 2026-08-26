@@ -1,4 +1,7 @@
-import { KNOWLEDGE_TOPICS } from "./content";
+"use client";
+
+import { useTranslation } from "react-i18next";
+import { KNOWLEDGE_TOPIC_KEYS } from "./content";
 
 const NODES = [
     { x: 80, y: 60 },
@@ -19,8 +22,11 @@ const EDGES = [
 ] as const;
 
 const KnowledgeGraphSvg = () => {
+    const { t } = useTranslation();
+    const topics = KNOWLEDGE_TOPIC_KEYS.map((key) => t(`landing.knowledge.topics.${key}`));
+
     return (
-        <svg viewBox="0 0 400 300" className="w-full max-w-lg" role="img" aria-label="Diagram of connected knowledge topics extracted from a document">
+        <svg viewBox="0 0 400 300" className="w-full max-w-lg" role="img" aria-label={t("landing.knowledge.diagramAlt")}>
             {EDGES.map((edge) => {
                 const from = NODES[edge.from];
                 const to = NODES[edge.to];
@@ -38,7 +44,7 @@ const KnowledgeGraphSvg = () => {
             })}
 
             {NODES.map((node, index) => (
-                <g key={KNOWLEDGE_TOPICS[index]}>
+                <g key={topics[index]}>
                     <circle cx={node.x} cy={node.y} r={5} fill="var(--blue)" />
                     <text
                         x={node.x}
@@ -46,7 +52,7 @@ const KnowledgeGraphSvg = () => {
                         textAnchor="middle"
                         className="fill-foreground text-[11px] font-medium"
                     >
-                        {KNOWLEDGE_TOPICS[index]}
+                        {topics[index]}
                     </text>
                 </g>
             ))}

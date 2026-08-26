@@ -1,12 +1,13 @@
 "use client";
 
 import { motion } from "motion/react";
+import { useTranslation } from "react-i18next";
 import { usePrefersReducedMotion } from "./hooks/usePrefersReducedMotion";
 import GeometricBlocksVisual from "./GeometricBlocksVisual";
-import { READING_SCENE_CONTENT } from "./content";
 
 const DocumentReadingScene = () => {
     const prefersReducedMotion = usePrefersReducedMotion();
+    const { t } = useTranslation();
 
     return (
         <motion.section
@@ -18,9 +19,9 @@ const DocumentReadingScene = () => {
         >
             <div>
                 <h2 className="text-balance font-serif text-4xl font-semibold leading-tight tracking-[-0.01em] text-foreground sm:text-5xl">
-                    {READING_SCENE_CONTENT.headline}
+                    {t("landing.reading.headline")}
                 </h2>
-                <p className="mt-5 max-w-md text-lg text-muted-foreground">{READING_SCENE_CONTENT.subheadline}</p>
+                <p className="mt-5 max-w-md text-lg text-muted-foreground">{t("landing.reading.subheadline")}</p>
             </div>
             <GeometricBlocksVisual />
         </motion.section>

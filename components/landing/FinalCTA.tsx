@@ -2,10 +2,13 @@
 
 import Link from "next/link";
 import { motion } from "motion/react";
+import { useTranslation } from "react-i18next";
 import OrbitingCircleVisual from "./OrbitingCircleVisual";
-import { APP_ENTRY_ROUTE, FINAL_CTA_CONTENT } from "./content";
+import { APP_ENTRY_ROUTE } from "./content";
 
 const FinalCTA = () => {
+    const { t } = useTranslation();
+
     return (
         <section className="relative overflow-hidden py-32">
             <div
@@ -33,16 +36,16 @@ const FinalCTA = () => {
                     className="order-1 lg:order-2"
                 >
                     <h2 className="text-balance font-serif text-4xl font-semibold leading-tight tracking-[-0.01em] text-foreground sm:text-5xl">
-                        {FINAL_CTA_CONTENT.headline}
+                        {t("landing.finalCta.headline")}
                         <br />
-                        {FINAL_CTA_CONTENT.subheadline}
+                        {t("landing.finalCta.subheadline")}
                     </h2>
 
                     <Link
                         href={APP_ENTRY_ROUTE}
                         className="mt-10 inline-flex items-center justify-center rounded-full bg-(--blue) px-7 py-3.5 text-base font-medium text-primary-foreground transition-transform hover:scale-[1.03]"
                     >
-                        {FINAL_CTA_CONTENT.primaryCta}
+                        {t("landing.finalCta.primaryCta")}
                     </Link>
                 </motion.div>
             </div>

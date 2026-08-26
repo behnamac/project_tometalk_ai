@@ -2,6 +2,7 @@
 
 import React, { useCallback, useRef } from 'react';
 import { useController, FieldValues } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { FileUploadFieldProps } from '@/types';
 import { cn } from '@/lib/utils';
 import { FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
@@ -16,6 +17,7 @@ const FileUploader = <T extends FieldValues>({
     placeholder,
     hint,
 }: FileUploadFieldProps<T>) => {
+    const { t } = useTranslation();
     const {
         field: { onChange, value },
     } = useController({ name, control });
@@ -73,7 +75,7 @@ const FileUploader = <T extends FieldValues>({
                                 onClick={onRemove}
                                 className="upload-dropzone-remove"
                             >
-                                Remove
+                                {t('upload.remove')}
                             </button>
                         </div>
                     ) : (

@@ -1,18 +1,21 @@
 'use client';
 
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { voiceCategories, voiceOptions } from '@/lib/constants/voice';
 import { cn } from '@/lib/utils';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { VoiceSelectorProps } from '@/types';
 
-const CATEGORIES: { key: keyof typeof voiceCategories; label: string }[] = [
-    { key: 'male', label: 'Male Voices' },
-    { key: 'female', label: 'Female Voices' },
+const CATEGORIES: { key: keyof typeof voiceCategories; labelKey: string }[] = [
+    { key: 'male', labelKey: 'voice.male' },
+    { key: 'female', labelKey: 'voice.female' },
 ];
 
 const VoiceSelector = ({ value, onChange, disabled, className }: VoiceSelectorProps) => {
+    const { t } = useTranslation();
+
     return (
         <div className={cn('space-y-6', className)}>
             <RadioGroup
@@ -21,9 +24,9 @@ const VoiceSelector = ({ value, onChange, disabled, className }: VoiceSelectorPr
                 disabled={disabled}
                 className="space-y-8"
             >
-                {CATEGORIES.map(({ key, label }) => (
+                {CATEGORIES.map(({ key, labelKey }) => (
                     <div className="space-y-4" key={key}>
-                        <h4 className="voice-selector-category">{label}</h4>
+                        <h4 className="voice-selector-category">{t(labelKey)}</h4>
                         <div className="voice-selector-options">
                             {voiceCategories[key].map((voiceId) => {
                                 const voice = voiceOptions[voiceId as keyof typeof voiceOptions];
@@ -44,7 +47,7 @@ const VoiceSelector = ({ value, onChange, disabled, className }: VoiceSelectorPr
                                                 <span className="voice-selector-name">{voice.name}</span>
                                             </div>
                                             <p className="voice-selector-description">
-                                                {voice.description}
+                                                {t(`voice.descriptions.${voiceId}`, { defaultValue: voice.description })}
                                             </p>
                                         </div>
                                     </Label>

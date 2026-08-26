@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useTranslation } from 'react-i18next';
 import { Upload, ImageIcon } from 'lucide-react';
 import { UploadSchema } from '@/lib/zod';
 import { BookUploadFormValues } from '@/types';
@@ -18,13 +19,14 @@ import { useIsMounted } from '@/hooks/useIsMounted';
 
 type Step = 1 | 2 | 3;
 
-const STEPS: { step: Step; label: string }[] = [
-    { step: 1, label: 'Upload' },
-    { step: 2, label: 'Details' },
-    { step: 3, label: 'Voice' },
+const STEPS: { step: Step; labelKey: string }[] = [
+    { step: 1, labelKey: 'upload.steps.upload' },
+    { step: 2, labelKey: 'upload.steps.details' },
+    { step: 3, labelKey: 'upload.steps.voice' },
 ];
 
 const UploadForm = () => {
+    const { t } = useTranslation();
     const [step, setStep] = useState<Step>(1);
     const isMounted = useIsMounted();
     const { submit, isSubmitting } = useBookUpload();
@@ -66,7 +68,7 @@ const UploadForm = () => {
 
             <div className="book-upload-wrapper">
                 <div className="book-upload-steps">
-                    {STEPS.map(({ step: s, label }, i) => (
+                    {STEPS.map(({ step: s, labelKey }, i) => (
                         <React.Fragment key={s}>
                             <div className="flex items-center gap-2">
                                 <span
@@ -80,7 +82,7 @@ const UploadForm = () => {
                                     {s}
                                 </span>
                                 <span className={cn('book-upload-step-label', step >= s ? 'text-[var(--foreground)]' : 'book-upload-step-label-upcoming')}>
-                                    {label}
+                                    {t(labelKey)}
                                 </span>
                             </div>
                             {i < STEPS.length - 1 && (
@@ -97,22 +99,22 @@ const UploadForm = () => {
                                 <FileUploader
                                     control={form.control}
                                     name="pdfFile"
-                                    label="Book PDF File"
+                                    label={t('upload.pdfLabel')}
                                     acceptTypes={ACCEPTED_PDF_TYPES}
                                     icon={Upload}
-                                    placeholder="Click to upload PDF"
-                                    hint="PDF file (max 50MB)"
+                                    placeholder={t('upload.pdfPlaceholder')}
+                                    hint={t('upload.pdfHint')}
                                     disabled={isSubmitting}
                                 />
 
                                 <FileUploader
                                     control={form.control}
                                     name="coverImage"
-                                    label="Cover Image (Optional)"
+                                    label={t('upload.coverLabel')}
                                     acceptTypes={ACCEPTED_IMAGE_TYPES}
                                     icon={ImageIcon}
-                                    placeholder="Click to upload cover image"
-                                    hint="Leave empty to auto-generate from PDF"
+                                    placeholder={t('upload.coverPlaceholder')}
+                                    hint={t('upload.coverHint')}
                                     disabled={isSubmitting}
                                 />
 
@@ -122,7 +124,7 @@ const UploadForm = () => {
                                     disabled={!pdfFile || isSubmitting}
                                     className={cn('book-upload-btn-primary mt-2', (!pdfFile || isSubmitting) && 'book-upload-btn-primary-disabled')}
                                 >
-                                    Continue
+                                    {t('upload.continue')}
                                 </button>
                             </div>
                         )}
@@ -134,11 +136,11 @@ const UploadForm = () => {
                                     name="title"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel className="book-upload-label">Title</FormLabel>
+                                            <FormLabel className="book-upload-label">{t('upload.titleLabel')}</FormLabel>
                                             <FormControl>
                                                 <Input
                                                     className="book-upload-input"
-                                                    placeholder="ex: Rich Dad Poor Dad"
+                                                    placeholder={t('upload.titlePlaceholder')}
                                                     {...field}
                                                     disabled={isSubmitting}
                                                 />
@@ -153,11 +155,11 @@ const UploadForm = () => {
                                     name="author"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel className="book-upload-label">Author Name</FormLabel>
+                                            <FormLabel className="book-upload-label">{t('upload.authorLabel')}</FormLabel>
                                             <FormControl>
                                                 <Input
                                                     className="book-upload-input"
-                                                    placeholder="ex: Robert Kiyosaki"
+                                                    placeholder={t('upload.authorPlaceholder')}
                                                     {...field}
                                                     disabled={isSubmitting}
                                                 />
@@ -173,7 +175,7 @@ const UploadForm = () => {
                                         onClick={() => setStep(1)}
                                         className="book-upload-btn-secondary flex-1"
                                     >
-                                        Back
+                                        {t('upload.back')}
                                     </button>
                                     <button
                                         type="button"
@@ -181,7 +183,7 @@ const UploadForm = () => {
                                         disabled={isSubmitting}
                                         className="book-upload-btn-primary flex-[2]"
                                     >
-                                        Continue
+                                        {t('upload.continue')}
                                     </button>
                                 </div>
                             </div>
@@ -212,10 +214,10 @@ const UploadForm = () => {
                                         onClick={() => setStep(2)}
                                         className="book-upload-btn-secondary flex-1"
                                     >
-                                        Back
+                                        {t('upload.back')}
                                     </button>
                                     <button type="submit" disabled={isSubmitting} className="book-upload-btn-primary flex-[2]">
-                                        Begin Synthesis
+                                        {t('upload.beginSynthesis')}
                                     </button>
                                 </div>
                             </div>

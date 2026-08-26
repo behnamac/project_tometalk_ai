@@ -3,9 +3,11 @@ import BookCard from "@/components/BookCard";
 import {getAllBooks} from "@/lib/actions/book.actions";
 import Search from "@/components/Search";
 import AppHeader from "@/components/AppHeader";
+import { getServerTranslation } from "@/lib/i18n/server";
 
 const Page = async ({ searchParams }: { searchParams: Promise<{ query?: string }> }) => {
     const { query } = await searchParams;
+    const { t } = await getServerTranslation();
 
     const bookResults = await getAllBooks(query)
     const books = bookResults.success ? bookResults.data ?? [] : []
@@ -16,7 +18,7 @@ const Page = async ({ searchParams }: { searchParams: Promise<{ query?: string }
 
             <main className="library-main">
                 <div className="library-title-row">
-                    <h1 className="library-title">Your Library</h1>
+                    <h1 className="library-title">{t("library.title")}</h1>
                     <Search />
                 </div>
 
@@ -28,7 +30,7 @@ const Page = async ({ searchParams }: { searchParams: Promise<{ query?: string }
                     </div>
                 ) : (
                     <div className="library-empty-card">
-                        <p>No books yet. Add your first book to get started.</p>
+                        <p>{t("library.empty")}</p>
                     </div>
                 )}
             </main>

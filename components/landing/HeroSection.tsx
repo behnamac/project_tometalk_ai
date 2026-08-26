@@ -2,10 +2,13 @@
 
 import Link from "next/link";
 import { motion } from "motion/react";
+import { useTranslation } from "react-i18next";
 import BookFlipVisual from "./BookFlipVisual";
-import { APP_ENTRY_ROUTE, HERO_CONTENT } from "./content";
+import { APP_ENTRY_ROUTE } from "./content";
 
 const HeroSection = () => {
+    const { t } = useTranslation();
+
     return (
         <section className="relative flex min-h-[100svh] items-center overflow-hidden pt-24">
             <div
@@ -21,18 +24,18 @@ const HeroSection = () => {
                     transition={{ duration: 0.7, ease: "easeOut" }}
                 >
                     <p className="mb-4 text-sm font-medium uppercase tracking-[0.2em] text-(--blue)">
-                        {HERO_CONTENT.eyebrow}
+                        {t("landing.hero.eyebrow")}
                     </p>
                     <h1 className="text-balance font-serif text-5xl font-bold leading-[1.05] tracking-[-0.02em] text-foreground sm:text-6xl lg:text-7xl">
-                        {HERO_CONTENT.headline}
+                        {t("landing.hero.headline")}
                     </h1>
-                    <p className="mt-6 max-w-md text-lg text-muted-foreground">{HERO_CONTENT.subheadline}</p>
+                    <p className="mt-6 max-w-md text-lg text-muted-foreground">{t("landing.hero.subheadline")}</p>
 
                     <Link
                         href={APP_ENTRY_ROUTE}
                         className="mt-10 inline-flex items-center justify-center rounded-full bg-(--blue) px-7 py-3.5 text-base font-medium text-primary-foreground transition-transform hover:scale-[1.03]"
                     >
-                        {HERO_CONTENT.primaryCta}
+                        {t("landing.hero.primaryCta")}
                     </Link>
                 </motion.div>
 

@@ -5,10 +5,12 @@ import Link from "next/link";
 import Image from "next/image";
 import { X } from "lucide-react";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 import { BookCardProps } from "@/types";
 import { removeBook } from "@/lib/actions/book.actions";
 
 const BookCard = ({ id, title, author, coverURL, slug }: BookCardProps) => {
+    const { t } = useTranslation();
     const [isPending, startTransition] = useTransition();
     const [isRemoved, setIsRemoved] = useState(false);
 
@@ -16,7 +18,7 @@ const BookCard = ({ id, title, author, coverURL, slug }: BookCardProps) => {
         e.preventDefault();
         e.stopPropagation();
 
-        if (!window.confirm(`Remove "${title}" from your library?`)) return;
+        if (!window.confirm(t("bookCard.confirmRemove", { title }))) return;
 
         startTransition(async () => {
             const result = await removeBook(id);
@@ -24,7 +26,7 @@ const BookCard = ({ id, title, author, coverURL, slug }: BookCardProps) => {
             if (result.success) {
                 setIsRemoved(true);
             } else {
-                toast.error(result.error || 'Failed to remove book');
+                toast.error(result.error || t("bookCard.removeFailed"));
             }
         });
     };
@@ -38,7 +40,7 @@ const BookCard = ({ id, title, author, coverURL, slug }: BookCardProps) => {
                 onClick={handleRemove}
                 disabled={isPending}
                 className="absolute top-2 right-2 z-10 rounded-full bg-black/60 p-1 text-white hover:bg-black/80 disabled:opacity-50"
-                aria-label={`Remove ${title} from library`}
+                aria-label={t("bookCard.removeAria", { title })}
             >
                 <X size={16} />
             </button>

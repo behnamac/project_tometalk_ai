@@ -7,6 +7,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
+import { useTranslation } from 'react-i18next';
 import { Eye, EyeOff } from 'lucide-react';
 
 import { SignInSchema } from '@/lib/zod';
@@ -16,9 +17,8 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 
-const DEFAULT_SUBTITLE = 'Sign in to continue your book conversations.';
-const REASON_SUBTITLES: Record<string, string> = {
-    upload: 'Please login to upload books.',
+const REASON_SUBTITLE_KEYS: Record<string, string> = {
+    upload: 'signIn.subtitleUpload',
 };
 
 // Only allow redirecting back to a same-site relative path, never an absolute
@@ -31,13 +31,15 @@ function getSafeRedirect(redirect: string | null): string {
 }
 
 const SignInForm = () => {
+    const { t } = useTranslation();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const router = useRouter();
     const searchParams = useSearchParams();
 
     const reason = searchParams.get('reason');
-    const subtitle = (reason && REASON_SUBTITLES[reason]) || DEFAULT_SUBTITLE;
+    const subtitleKey = (reason && REASON_SUBTITLE_KEYS[reason]) || 'signIn.subtitleDefault';
+    const subtitle = t(subtitleKey);
     const redirectTarget = getSafeRedirect(searchParams.get('redirect'));
 
     const form = useForm<SignInFormValues>({
@@ -53,7 +55,7 @@ const SignInForm = () => {
                 router.push(redirectTarget);
             },
             onError: (ctx) => {
-                toast.error(ctx.error.message || 'Failed to sign in');
+                toast.error(ctx.error.message || t('signIn.failed'));
             },
         });
 
@@ -84,7 +86,7 @@ const SignInForm = () => {
             <div className="login-form-panel">
                 <div className="login-card">
                     <Image src="/assets/logo.png" alt="TomeTalk" width={32} height={32} className="login-logo" />
-                    <h1 className="login-title">Welcome back</h1>
+                    <h1 className="login-title">{t('signIn.title')}</h1>
                     <p className="login-subtitle">{subtitle}</p>
 
                     <Form {...form}>
@@ -94,12 +96,12 @@ const SignInForm = () => {
                                 name="email"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel className="login-label">Email</FormLabel>
+                                        <FormLabel className="login-label">{t('signIn.emailLabel')}</FormLabel>
                                         <FormControl>
                                             <Input
                                                 className="login-input"
                                                 type="email"
-                                                placeholder="you@example.com"
+                                                placeholder={t('signIn.emailPlaceholder')}
                                                 autoComplete="email"
                                                 {...field}
                                                 disabled={isSubmitting}
@@ -115,7 +117,7 @@ const SignInForm = () => {
                                 name="password"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel className="login-label">Password</FormLabel>
+                                        <FormLabel className="login-label">{t('signIn.passwordLabel')}</FormLabel>
                                         <FormControl>
                                             <div className="relative">
                                                 <Input
@@ -131,7 +133,7 @@ const SignInForm = () => {
                                                     onClick={() => setShowPassword((prev) => !prev)}
                                                     disabled={isSubmitting}
                                                     className="absolute top-1/2 right-3 -translate-y-1/2 text-[var(--muted-foreground)] hover:text-[var(--foreground)] disabled:opacity-50"
-                                                    aria-label={showPassword ? 'Hide password' : 'Show password'}
+                                                    aria-label={showPassword ? t('signIn.hidePassword') : t('signIn.showPassword')}
                                                     tabIndex={-1}
                                                 >
                                                     {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
@@ -145,15 +147,15 @@ const SignInForm = () => {
 
                             <Button type="submit" className="login-btn-primary" disabled={isSubmitting}>
                                 <span className="login-btn-sweep" />
-                                <span className="login-btn-text">{isSubmitting ? 'Signing in...' : 'Sign In'}</span>
+                                <span className="login-btn-text">{isSubmitting ? t('signIn.submitting') : t('signIn.submit')}</span>
                             </Button>
                         </form>
                     </Form>
 
                     <p className="login-footer-text">
-                        Don&apos;t have an account?{' '}
+                        {t('signIn.footer')}{' '}
                         <Link href="/sign-up" className="login-link">
-                            Sign up
+                            {t('signIn.signUpLink')}
                         </Link>
                     </p>
                 </div>

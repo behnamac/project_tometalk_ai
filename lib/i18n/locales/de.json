@@ -3,11 +3,203 @@
     "library": "Bibliothek",
     "addNew": "Neu hinzufügen",
     "signIn": "Anmelden",
-    "signOut": "Abmelden"
+    "signOut": "Abmelden",
+    "startConversation": "Gespräch starten"
   },
   "language": {
     "label": "Sprache",
     "en": "English",
     "de": "Deutsch"
+  },
+  "landing": {
+    "hero": {
+      "eyebrow": "TomeTalk",
+      "headline": "Sprich mit deinen Dokumenten.",
+      "subheadline": "Lade ein PDF, ein Buch, einen Bericht oder ein Dokument hoch. Lass die KI es verstehen und stelle anschließend beliebige Fragen dazu.",
+      "primaryCta": "Gespräch starten"
+    },
+    "reading": {
+      "headline": "Dein Dokument wird verständlich.",
+      "subheadline": "TomeTalk liest den Inhalt, versteht den Kontext und verknüpft Informationen über das gesamte Dokument hinweg."
+    },
+    "knowledge": {
+      "headline": "Nicht nur Suche. Verständnis.",
+      "subheadline": "Fragen werden anhand der Bedeutung und des Kontexts deiner eigenen Inhalte beantwortet.",
+      "diagramAlt": "Diagramm verbundener Wissensthemen, die aus einem Dokument extrahiert wurden",
+      "topics": {
+        "methodology": "Methodik",
+        "keyFindings": "Wichtigste Erkenntnisse",
+        "limitations": "Einschränkungen",
+        "relatedWork": "Verwandte Arbeiten",
+        "conclusions": "Schlussfolgerungen",
+        "definitions": "Definitionen"
+      }
+    },
+    "conversation": {
+      "headline": "Fragen. Verstehen. Entdecken.",
+      "userQuestion": "Was sind die wichtigsten Schlussfolgerungen dieses Dokuments?",
+      "assistantIntro": "Das Dokument nennt drei wesentliche Schlussfolgerungen:",
+      "points": {
+        "one": "Die vorgeschlagene Methode übertrifft die Baseline deutlich.",
+        "two": "Die Ergebnisse sind über alle getesteten Datensätze hinweg konsistent.",
+        "three": "Für Randfälle mit spärlichen Daten ist weitere Arbeit nötig."
+      },
+      "citation": "S. 24, Schlussfolgerungen",
+      "sourceLabel": "Quelle"
+    },
+    "useCases": {
+      "heading": "Gemacht für die Art, wie du bereits liest.",
+      "items": {
+        "study": {
+          "title": "Lernen",
+          "description": "Verwandle Bücher und Vorlesungsnotizen in deinen persönlichen Lernassistenten.",
+          "example": "„Fasse Kapitel 4 in einfachen Worten zusammen.“"
+        },
+        "research": {
+          "title": "Forschung",
+          "description": "Erschließe lange Fachartikel, ohne jede Seite erneut zu lesen.",
+          "example": "„Welche Methodik haben die Autoren verwendet?“"
+        },
+        "work": {
+          "title": "Arbeit",
+          "description": "Stelle Fragen zu Berichten, Dokumentationen und internem Wissen.",
+          "example": "„Was hat sich zwischen diesen beiden Versionen geändert?“"
+        },
+        "understand": {
+          "title": "Verstehen",
+          "description": "Zerlege komplizierte Dokumente in klare Erklärungen.",
+          "example": "„Erkläre diese Klausel, als wäre ich neu im Thema.“"
+        }
+      }
+    },
+    "capabilities": {
+      "heading": "Alles, was du brauchst, um Antworten zu bekommen.",
+      "items": {
+        "upload": {
+          "title": "Lade alles hoch, das es wert ist, verstanden zu werden",
+          "description": "PDFs, Bücher, Berichte, Handbücher, Forschungsarbeiten und mehr."
+        },
+        "contextual": {
+          "title": "Stelle kontextbezogene Fragen",
+          "description": "Erhalte Antworten, die genau auf den von dir hochgeladenen Inhalten beruhen."
+        },
+        "summarize": {
+          "title": "Fasse lange Inhalte zusammen",
+          "description": "Von Hunderten Seiten zu einem einfachen Gespräch."
+        },
+        "find": {
+          "title": "Finde bestimmte Informationen",
+          "description": "Finde Antworten, ohne Seite für Seite zu suchen."
+        },
+        "explore": {
+          "title": "Erkunde Ideen quer durch ein Dokument",
+          "description": "Folge einem Gedankengang, wohin er auch führt."
+        }
+      }
+    },
+    "finalCta": {
+      "headline": "Deine Dokumente haben Antworten.",
+      "subheadline": "Fang an zu fragen.",
+      "primaryCta": "Sprich mit deinen Dokumenten"
+    }
+  },
+  "library": {
+    "title": "Deine Bibliothek",
+    "empty": "Noch keine Bücher. Füge dein erstes Buch hinzu, um zu starten.",
+    "searchPlaceholder": "Bücher nach Titel oder Autor suchen"
+  },
+  "bookCard": {
+    "removeAria": "{{title}} aus der Bibliothek entfernen",
+    "confirmRemove": "„{{title}}“ aus deiner Bibliothek entfernen?",
+    "removeFailed": "Buch konnte nicht entfernt werden"
+  },
+  "upload": {
+    "pageTitle": "Neues Buch hinzufügen",
+    "pageSubtitle": "Lade ein PDF hoch, um dein interaktives Leseerlebnis zu erzeugen",
+    "steps": {
+      "upload": "Hochladen",
+      "details": "Details",
+      "voice": "Stimme"
+    },
+    "pdfLabel": "Buch-PDF-Datei",
+    "pdfPlaceholder": "Zum Hochladen des PDFs klicken",
+    "pdfHint": "PDF-Datei (max. 50 MB)",
+    "coverLabel": "Titelbild (optional)",
+    "coverPlaceholder": "Zum Hochladen des Titelbilds klicken",
+    "coverHint": "Leer lassen, um es automatisch aus dem PDF zu erzeugen",
+    "titleLabel": "Titel",
+    "titlePlaceholder": "z. B.: Rich Dad Poor Dad",
+    "authorLabel": "Name des Autors",
+    "authorPlaceholder": "z. B.: Robert Kiyosaki",
+    "continue": "Weiter",
+    "back": "Zurück",
+    "beginSynthesis": "Synthese starten",
+    "remove": "Entfernen",
+    "toasts": {
+      "bookExists": "Ein Buch mit demselben Titel existiert bereits.",
+      "parseFailed": "PDF konnte nicht verarbeitet werden. Bitte versuche es mit einer anderen Datei.",
+      "createFailed": "Buch konnte nicht erstellt werden",
+      "segmentsFailed": "Buchabschnitte konnten nicht gespeichert werden",
+      "uploadFailed": "Buch konnte nicht hochgeladen werden. Bitte versuche es später erneut."
+    }
+  },
+  "loading": {
+    "title": "Dein Buch wird synthetisiert",
+    "description": "Bitte warte, während wir dein PDF verarbeiten und dein interaktives Leseerlebnis vorbereiten."
+  },
+  "voice": {
+    "male": "Männliche Stimmen",
+    "female": "Weibliche Stimmen",
+    "descriptions": {
+      "dave": "Junger Mann, britisch (Essex), locker & gesprächig",
+      "daniel": "Mann mittleren Alters, britisch, souverän, aber warm",
+      "chris": "Mann, locker & entspannt",
+      "rachel": "Junge Frau, amerikanisch, ruhig & klar",
+      "sarah": "Junge Frau, amerikanisch, sanft & zugänglich"
+    }
+  },
+  "signIn": {
+    "title": "Willkommen zurück",
+    "subtitleDefault": "Melde dich an, um deine Buchgespräche fortzusetzen.",
+    "subtitleUpload": "Bitte melde dich an, um Bücher hochzuladen.",
+    "emailLabel": "E-Mail",
+    "emailPlaceholder": "du@beispiel.com",
+    "passwordLabel": "Passwort",
+    "showPassword": "Passwort anzeigen",
+    "hidePassword": "Passwort verbergen",
+    "submit": "Anmelden",
+    "submitting": "Anmeldung läuft...",
+    "failed": "Anmeldung fehlgeschlagen",
+    "footer": "Noch kein Konto?",
+    "signUpLink": "Registrieren"
+  },
+  "signUp": {
+    "title": "Zugang auf Anfrage",
+    "subtitle": "Bookified befindet sich derzeit in einer privaten Testphase. Wenn du es ausprobieren möchtest, schreib mir kurz eine E-Mail und ich richte dir einen Zugang ein.",
+    "emailCta": "Schreib mir für einen Zugang",
+    "footer": "Du hast bereits ein Konto?",
+    "signInLink": "Anmelden"
+  },
+  "book": {
+    "by": "von {{author}}",
+    "voiceLabel": "Stimme: {{name}}",
+    "status": {
+      "connecting": "Verbindung wird hergestellt...",
+      "starting": "Wird gestartet...",
+      "listening": "Hört zu",
+      "thinking": "Denkt nach...",
+      "speaking": "Spricht",
+      "ready": "Bereit"
+    },
+    "backToLibrary": "Zurück zur Bibliothek",
+    "transcriptEmptyTitle": "Noch kein Gespräch",
+    "transcriptEmptyHint": "Klicke oben auf die Mikrofontaste, um zu sprechen",
+    "startCall": "Sprachsitzung starten",
+    "stopCall": "Sprachsitzung beenden"
+  },
+  "vapi": {
+    "signInRequired": "Bitte melde dich an, um eine Sprachsitzung zu starten.",
+    "limitReached": "Sitzungslimit erreicht. Bitte aktualisiere deinen Tarif.",
+    "startFailed": "Sprachsitzung konnte nicht gestartet werden. Bitte versuche es erneut."
   }
 }
