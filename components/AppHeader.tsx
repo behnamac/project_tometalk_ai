@@ -45,7 +45,7 @@ const AppHeader = () => {
         <header className="app-header" ref={setHeaderEl}>
             <div className="wrapper flex items-center justify-between py-[18px]">
                 <Link href="/" className="flex items-center gap-2.5">
-                    <Image src="/assets/logo.png" alt="TomeTalk" width={26} height={26} className="rounded-[7px]" />
+                    <Image src="/assets/icon.png" alt="TomeTalk" width={26} height={26} className="rounded-[7px] object-contain" />
                     <span className="app-header-logo-text">TomeTalk</span>
                 </Link>
 

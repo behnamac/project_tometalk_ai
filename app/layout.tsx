@@ -36,6 +36,11 @@ const ibmPlexSans = IBM_Plex_Sans({
 export const metadata: Metadata = {
   title: "TomeTalk",
   description: "Transform your books into interactive AI conversations. Upload PDFs, and chat with your books using voice.",
+  icons: {
+    icon: "/assets/icon.png",
+    shortcut: "/assets/icon.png",
+    apple: "/assets/icon.png",
+  },
 };
 
 export default async function RootLayout({
