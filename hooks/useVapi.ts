@@ -118,10 +118,19 @@ export function useVapi(book: IBook) {
                     if (message.role === 'user') setCurrentUserMessage('');
 
                     setMessages((prev) => {
-                        const isDupe = prev.some(
-                            (m) => m.role === message.role && m.content === message.transcript,
-                        );
-                        return isDupe ? prev : [...prev, { role: message.role, content: message.transcript }];
+                        const last = prev[prev.length - 1];
+
+                        // Vapi emits one final transcript per sentence. Merge consecutive
+                        // chunks from the same speaker so one answer renders as one bubble.
+                        if (last && last.role === message.role) {
+                            if (last.content.endsWith(message.transcript)) return prev; // dupe
+                            return [
+                                ...prev.slice(0, -1),
+                                { role: last.role, content: `${last.content} ${message.transcript}` },
+                            ];
+                        }
+
+                        return [...prev, { role: message.role, content: message.transcript }];
                     });
                 }
             },
